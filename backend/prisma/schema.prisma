@@ -1,0 +1,603 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Role {
+  PARENT
+  DOCTOR
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum AppointmentMode {
+  VIDEO
+  CALL
+  IN_PERSON
+}
+
+enum NotificationType {
+  LIKE
+  COMMENT
+  REPLY
+  APPOINTMENT_BOOKED
+  APPOINTMENT_CONFIRMED
+  APPOINTMENT_CANCELLED
+  APPOINTMENT_REMINDER
+  DOCTOR_VERIFIED
+  SYSTEM
+  MENTION
+}
+
+enum PostStatus {
+  ACTIVE
+  HIDDEN
+  DELETED
+}
+
+enum DoctorStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ReportReason {
+  SPAM
+  INAPPROPRIATE
+  MISINFORMATION
+  HARASSMENT
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+  ACTION_TAKEN
+}
+
+// ============================================================
+// USER
+// ============================================================
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  password          String?
+  googleId          String?   @unique
+  role              Role      @default(PARENT)
+  fullName          String
+  phone             String?
+  bio               String?
+  avatarUrl         String?
+  avatarPublicId    String?
+  isEmailVerified   Boolean   @default(false)
+  isActive          Boolean   @default(true)
+  lastLoginAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  refreshTokens     RefreshToken[]
+  emailVerifications EmailVerification[]
+  passwordResets    PasswordReset[]
+  children          Child[]
+  posts             Post[]
+  comments          Comment[]
+  likes             Like[]
+  bookmarks         Bookmark[]
+  notificationsReceived Notification[] @relation("NotificationRecipient")
+  notificationsSent    Notification[] @relation("NotificationActor")
+  appointmentsAsPatient Appointment[] @relation("PatientAppointments")
+  reviewsGiven      Review[]
+  reportsMade       Report[]       @relation("ReportedBy")
+  reportsOnMe       Report[]       @relation("ReportedUser")
+  doctor            Doctor?
+  adminLogs         AdminLog[]
+  auditLogs         AuditLog[]
+  messages          Message[]      @relation("MessageSender")
+  conversationsAsParticipant Participant[]
+  files             File[]
+
+  @@index([email])
+  @@index([role])
+  @@index([googleId])
+  @@map("users")
+}
+
+model RefreshToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  userId      String
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model EmailVerification {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("email_verifications")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("password_resets")
+}
+
+// ============================================================
+// DOCTOR
+// ============================================================
+
+model Doctor {
+  id                String       @id @default(cuid())
+  userId            String       @unique
+  specialty         String
+  qualifications    String
+  experience        Int          // years
+  bio               String?
+  location          String?
+  consultationFee   Int          // in paise/cents
+  currency          String       @default("INR")
+  status            DoctorStatus @default(VERIFIED)
+  verifiedAt        DateTime?
+  verifiedBy        String?
+  licenseNumber     String?
+  rating            Float        @default(0)
+  reviewCount       Int          @default(0)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  availability      DoctorAvailability[]
+  appointments      Appointment[]
+  reviews           Review[]
+
+  @@index([specialty])
+  @@index([status])
+  @@index([rating])
+  @@map("doctors")
+}
+
+model DoctorAvailability {
+  id          String   @id @default(cuid())
+  doctorId    String
+  dayOfWeek   Int      // 0=Sun, 6=Sat
+  startTime   String   // "09:00"
+  endTime     String   // "17:00"
+  isAvailable Boolean  @default(true)
+  doctor      Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId])
+  @@map("doctor_availability")
+}
+
+// ============================================================
+// APPOINTMENTS
+// ============================================================
+
+model Appointment {
+  id              String            @id @default(cuid())
+  patientId       String
+  doctorId        String
+  scheduledAt     DateTime
+  durationMinutes Int               @default(30)
+  mode            AppointmentMode
+  status          AppointmentStatus @default(PENDING)
+  reason          String?
+  notes           String?
+  meetingUrl      String?
+  cancelledAt     DateTime?
+  cancelReason    String?
+  completedAt     DateTime?
+  amountPaid      Int?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  patient         User   @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctor          Doctor @relation(fields: [doctorId], references: [id])
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([scheduledAt])
+  @@index([status])
+  @@map("appointments")
+}
+
+// ============================================================
+// CHILD TRACKING
+// ============================================================
+
+model Child {
+  id            String    @id @default(cuid())
+  parentId      String
+  name          String
+  dateOfBirth   DateTime
+  gender        Gender
+  bloodType     String?
+  allergies     String[]
+  photoUrl      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  parent        User      @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  growthRecords GrowthRecord[]
+  vaccinations  Vaccination[]
+  milestones    Milestone[]
+  medications   Medication[]
+
+  @@index([parentId])
+  @@map("children")
+}
+
+model GrowthRecord {
+  id          String   @id @default(cuid())
+  childId     String
+  recordedAt  DateTime @default(now())
+  weight      Float?   // kg
+  height      Float?   // cm
+  headCirc    Float?   // cm
+  bmi         Float?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  child       Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId])
+  @@index([recordedAt])
+  @@map("growth_records")
+}
+
+model Vaccination {
+  id              String    @id @default(cuid())
+  childId         String
+  name            String
+  scheduledDate   DateTime
+  administeredAt  DateTime?
+  batchNumber     String?
+  administeredBy  String?
+  notes           String?
+  createdAt       DateTime  @default(now())
+
+  child           Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId])
+  @@map("vaccinations")
+}
+
+model Milestone {
+  id          String   @id @default(cuid())
+  childId     String
+  title       String
+  category    String   // physical, cognitive, social, language
+  ageMonth    Int      // expected age in months
+  achieved    Boolean  @default(false)
+  achievedAt  DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  child       Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId])
+  @@index([category])
+  @@map("milestones")
+}
+
+model Medication {
+  id          String    @id @default(cuid())
+  childId     String
+  name        String
+  dosage      String
+  frequency   String
+  startDate   DateTime
+  endDate     DateTime?
+  prescribedBy String?
+  notes       String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  child       Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId])
+  @@map("medications")
+}
+
+// ============================================================
+// COMMUNITY
+// ============================================================
+
+model Post {
+  id          String     @id @default(cuid())
+  authorId    String
+  content     String
+  status      PostStatus @default(ACTIVE)
+  hashtags    String[]
+  mediaUrls   String[]
+  mediaPublicIds String[]
+  likesCount  Int        @default(0)
+  commentsCount Int      @default(0)
+  sharesCount Int        @default(0)
+  isPinned    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  likes       Like[]
+  bookmarks   Bookmark[]
+  reports     Report[]
+
+  @@index([authorId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@index([likesCount(sort: Desc)])
+  @@map("posts")
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  postId      String
+  authorId    String
+  parentId    String?  // null = top-level comment, set = reply
+  content     String
+  likesCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent      Comment? @relation("Replies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("Replies")
+  likes       Like[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([parentId])
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String?
+  commentId String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@index([userId])
+  @@index([postId])
+  @@map("likes")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@map("bookmarks")
+}
+
+// ============================================================
+// REVIEWS
+// ============================================================
+
+model Review {
+  id        String   @id @default(cuid())
+  doctorId  String
+  authorId  String
+  rating    Int      // 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([doctorId, authorId])
+  @@index([doctorId])
+  @@map("reviews")
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  actorId     String?
+  type        NotificationType
+  title       String
+  body        String
+  data        Json?
+  isRead      Boolean          @default(false)
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+
+  recipient   User  @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor       User? @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([recipientId])
+  @@index([isRead])
+  @@index([createdAt(sort: Desc)])
+  @@map("notifications")
+}
+
+// ============================================================
+// MESSAGING
+// ============================================================
+
+model Conversation {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastMessage  String?
+  lastMessageAt DateTime?
+
+  participants Participant[]
+  messages     Message[]
+
+  @@index([lastMessageAt(sort: Desc)])
+  @@map("conversations")
+}
+
+model Participant {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  joinedAt       DateTime     @default(now())
+  lastReadAt     DateTime?
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@map("participants")
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  mediaUrl       String?
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@map("messages")
+}
+
+// ============================================================
+// ADMIN / AUDIT
+// ============================================================
+
+model Report {
+  id           String       @id @default(cuid())
+  reportedById String
+  reportedUserId String?
+  postId       String?
+  reason       ReportReason
+  description  String?
+  status       ReportStatus @default(PENDING)
+  reviewedAt   DateTime?
+  reviewedBy   String?
+  createdAt    DateTime     @default(now())
+
+  reportedBy   User  @relation("ReportedBy", fields: [reportedById], references: [id], onDelete: Cascade)
+  reportedUser User? @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: SetNull)
+  post         Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("reports")
+}
+
+model AdminLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  action    String
+  target    String?
+  targetId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([createdAt])
+  @@map("admin_logs")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  Json?
+  newValue  Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model File {
+  id          String   @id @default(cuid())
+  userId      String
+  url         String
+  publicId    String
+  filename    String
+  mimetype    String
+  size        Int
+  folder      String?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("files")
+}
