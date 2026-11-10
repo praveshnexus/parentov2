@@ -53,28 +53,23 @@ export const AuthService = {
       fullName: dto.fullName,
       phone: dto.phone,
       role: dto.role as Role,
+      isEmailVerified: true,
     });
 
-    // Generate email verification token.
-    const token = generateToken();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-    await AuthRepository.createEmailVerification(
+    // Immediately authenticate the newly registered user.
+    const tokens = await AuthService._issueTokens(
       user.id,
-      token,
-      expiresAt,
+      user.email,
+      user.role,
+      res,
     );
 
-    await sendEmail({
-      to: user.email,
-      subject: "Verify your Parento email",
-      html: emailTemplates.verifyEmail(user.fullName, token),
-    });
+    await AuthRepository.updateLastLogin(user.id);
 
-    // Do not issue authentication tokens before email verification.
     return {
       user: sanitizeUser(user),
-      message: "Account created. Please verify your email before logging in.",
+      accessToken: tokens.accessToken,
+      message: "Account created successfully.",
     };
   },
 
@@ -100,14 +95,7 @@ export const AuthService = {
       throw new UnauthorizedError("Invalid credentials");
     }
 
-    // Require email verification before authentication.
-    if (!user.isEmailVerified) {
-      throw new AppError(
-        "Please verify your email before logging in",
-        403,
-      );
-    }
-
+    // Email verification is not required for login.
     const tokens = await AuthService._issueTokens(
       user.id,
       user.email,
@@ -142,7 +130,6 @@ export const AuthService = {
       user = await AuthRepository.findByEmail(payload.email);
 
       if (user) {
-        // Link Google account to an existing account.
         const { prisma } = await import("../config/prisma");
 
         user = await prisma.user.update({
@@ -199,7 +186,6 @@ export const AuthService = {
       throw new UnauthorizedError("Account is deactivated");
     }
 
-    // Rotate refresh token.
     await AuthRepository.deleteRefreshToken(token);
 
     const tokens = await AuthService._issueTokens(
@@ -239,7 +225,6 @@ export const AuthService = {
   async forgotPassword(dto: ForgotPasswordDto) {
     const user = await AuthRepository.findByEmail(dto.email);
 
-    // Don't reveal whether an email exists.
     if (!user) {
       return {
         message: "If the email exists, a reset link has been generated.",

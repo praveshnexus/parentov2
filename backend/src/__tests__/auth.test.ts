@@ -30,8 +30,9 @@ describe('Auth API', () => {
     }
   });
 
+  // ---------------- SIGNUP TESTS ----------------
   describe('POST /api/auth/signup', () => {
-    it('creates a new user', async () => {
+    it('creates a new user and immediately authenticates them', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
         .send({
@@ -44,7 +45,14 @@ describe('Auth API', () => {
       expect(res.status).toBe(201);
       expect(res.body.success).toBe(true);
       expect(res.body.data.user.email).toBe(testEmail);
-      expect(res.body.data.password).toBeUndefined();
+      expect(res.body.data.user.password).toBeUndefined();
+      expect(res.body.data.accessToken).toBeDefined();
+
+      const createdUser = await prisma.user.findUnique({
+        where: { email: testEmail },
+      });
+
+      expect(createdUser?.isEmailVerified).toBe(true);
     });
 
     it('rejects duplicate email', async () => {
@@ -72,6 +80,7 @@ describe('Auth API', () => {
     });
   });
 
+  // ---------------- LOGIN TESTS ----------------
   describe('POST /api/auth/login', () => {
     it('rejects invalid credentials', async () => {
       const res = await request(app)
@@ -84,7 +93,12 @@ describe('Auth API', () => {
       expect(res.status).toBe(401);
     });
 
-    it('rejects login when email is not verified', async () => {
+    it('allows login even when email is not verified', async () => {
+      await prisma.user.update({
+        where: { email: testEmail },
+        data: { isEmailVerified: false },
+      });
+
       const res = await request(app)
         .post('/api/auth/login')
         .send({
@@ -92,10 +106,14 @@ describe('Auth API', () => {
           password: 'Password1',
         });
 
-      expect(res.status).toBe(403);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.data.user.email).toBe(testEmail);
+      expect(res.body.data.accessToken).toBeDefined();
     });
   });
 
+  // ---------------- CURRENT USER TESTS ----------------
   describe('GET /api/auth/me', () => {
     it('rejects unauthenticated request', async () => {
       const res = await request(app).get('/api/auth/me');
@@ -104,6 +122,7 @@ describe('Auth API', () => {
     });
   });
 
+  // ---------------- FORGOT PASSWORD TESTS ----------------
   describe('POST /api/auth/forgot-password', () => {
     it('always returns 200 for a non-existent email', async () => {
       const res = await request(app)
