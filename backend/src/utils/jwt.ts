@@ -1,4 +1,6 @@
+
 import jwt, { type SignOptions } from 'jsonwebtoken';
+import { randomUUID } from 'crypto';
 import { config } from '../config/env';
 
 export interface JwtPayload {
@@ -9,18 +11,19 @@ export interface JwtPayload {
 
 export const generateAccessToken = (payload: JwtPayload): string => {
   const accessOptions: SignOptions = {
-  expiresIn: config.JWT_ACCESS_EXPIRES as SignOptions['expiresIn'],
-};
+    expiresIn: config.JWT_ACCESS_EXPIRES as SignOptions['expiresIn'],
+  };
 
-return jwt.sign(payload, config.JWT_ACCESS_SECRET, accessOptions);
+  return jwt.sign(payload, config.JWT_ACCESS_SECRET, accessOptions);
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
   const refreshOptions: SignOptions = {
-  expiresIn: config.JWT_REFRESH_EXPIRES as SignOptions['expiresIn'],
-};
+    expiresIn: config.JWT_REFRESH_EXPIRES as SignOptions['expiresIn'],
+    jwtid: randomUUID(),
+  };
 
-return jwt.sign(payload, config.JWT_REFRESH_SECRET, refreshOptions);
+  return jwt.sign(payload, config.JWT_REFRESH_SECRET, refreshOptions);
 };
 
 export const verifyAccessToken = (token: string): JwtPayload => {
