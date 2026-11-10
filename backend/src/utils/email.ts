@@ -26,6 +26,9 @@ const transporter = isEmailConfigured
         user: config.SMTP_USER,
         pass: config.SMTP_PASS,
       },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
     })
   : null;
 
@@ -34,28 +37,32 @@ export const sendEmail = async ({
   subject,
   html,
 }: SendEmailOptions): Promise<void> => {
-  if (!transporter || !config.EMAIL_FROM) {
-    logger.warn(`Email skipped because SMTP is not configured: ${subject}`);
-    return;
+  if (!transporter) {
+    const message = 'SMTP is not configured. Email cannot be sent.';
+    logger.error(message);
+    throw new Error(message);
   }
 
   try {
-    await transporter.sendMail({
-      from: config.EMAIL_FROM,
+    const result = await transporter.sendMail({
+      from: config.EMAIL_FROM!,
       to,
       subject,
       html,
     });
 
-    logger.info(`Email sent to ${to}: ${subject}`);
+    logger.info('Email sent successfully', {
+      to,
+      subject,
+      messageId: result.messageId,
+      response: result.response,
+    });
   } catch (error) {
-    logger.error('Email send error:', error);
-
-    // Email failures should not crash the application.
-    if (config.NODE_ENV === 'development' || config.NODE_ENV === 'production') {
-      logger.warn('Email notification could not be delivered.');
-      return;
-    }
+    logger.error('SMTP email delivery failed', {
+      to,
+      subject,
+      error: error instanceof Error ? error.message : String(error),
+    });
 
     throw error;
   }
@@ -68,15 +75,14 @@ export const emailTemplates = {
     <head><meta charset="utf-8"></head>
     <body style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 40px;">
-        <h1 style="color: #6366f1; margin-bottom: 8px;">Welcome to Parento! 👶</h1>
-        <p style="color: #374151;">Hi ${name},</p>
-        <p style="color: #374151;">Please verify your email address to get started.</p>
+        <h1 style="color: #6366f1;">Welcome to Parento! 👶</h1>
+        <p>Hi ${name},</p>
+        <p>Please verify your email address to get started.</p>
         <a href="${config.CLIENT_URL}/verify-email?token=${token}"
-           style="display: inline-block; background: linear-gradient(135deg, #6366f1, #ec4899); color: white;
-                  padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 20px 0;">
+           style="display: inline-block; background: #6366f1; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none;">
           Verify Email
         </a>
-        <p style="color: #9ca3af; font-size: 14px;">This link expires in 24 hours. If you didn't sign up, ignore this email.</p>
+        <p style="color: #9ca3af; font-size: 14px;">This link expires in 24 hours.</p>
       </div>
     </body>
     </html>
@@ -89,34 +95,34 @@ export const emailTemplates = {
     <body style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 40px;">
         <h1 style="color: #6366f1;">Reset Your Password</h1>
-        <p style="color: #374151;">Hi ${name},</p>
-        <p style="color: #374151;">We received a request to reset your password.</p>
+        <p>Hi ${name},</p>
+        <p>We received a request to reset your password.</p>
         <a href="${config.CLIENT_URL}/reset-password?token=${token}"
-           style="display: inline-block; background: linear-gradient(135deg, #6366f1, #ec4899); color: white;
-                  padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 20px 0;">
+           style="display: inline-block; background: #6366f1; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none;">
           Reset Password
         </a>
-        <p style="color: #9ca3af; font-size: 14px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+        <p style="color: #9ca3af; font-size: 14px;">This link expires in 1 hour.</p>
       </div>
     </body>
     </html>
   `,
 
-  appointmentConfirmed: (name: string, doctorName: string, date: string): string => `
+  appointmentConfirmed: (
+    name: string,
+    doctorName: string,
+    date: string
+  ): string => `
     <!DOCTYPE html>
     <html>
     <head><meta charset="utf-8"></head>
     <body style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px;">
       <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 40px;">
         <h1 style="color: #22c55e;">Appointment Confirmed! ✅</h1>
-        <p style="color: #374151;">Hi ${name},</p>
-        <p style="color: #374151;">Your appointment with <strong>${doctorName}</strong> has been confirmed.</p>
-        <div style="background: #f0fdf4; border-radius: 8px; padding: 16px; margin: 20px 0;">
-          <p style="color: #16a34a; margin: 0;"><strong>Date & Time:</strong> ${date}</p>
-        </div>
+        <p>Hi ${name},</p>
+        <p>Your appointment with <strong>${doctorName}</strong> has been confirmed.</p>
+        <p><strong>Date & Time:</strong> ${date}</p>
         <a href="${config.CLIENT_URL}/appointments"
-           style="display: inline-block; background: #22c55e; color: white;
-                  padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+           style="display: inline-block; background: #22c55e; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none;">
           View Appointment
         </a>
       </div>
