@@ -1,5 +1,8 @@
 import { PrismaClient, Role, DoctorStatus, Gender } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import vaccineSchedule from '../src/data/knowledge/vaccination-schedule.json';
+import whoGrowth from '../src/data/knowledge/who-growth-standards.json';
+import { ChildService } from '../src/services/child.service';
 
 const prisma = new PrismaClient();
 
@@ -71,66 +74,32 @@ async function main() {
     },
   });
 
-  // ── Demo Child ────────────────────────────────────────────────
-  const existingChild = await prisma.child.findFirst({ where: { parentId: parent.id } });
-  if (!existingChild) {
-    const child = await prisma.child.create({
-      data: {
-        parentId: parent.id,
-        name: 'Arjun',
-        dateOfBirth: new Date('2023-01-15'),
-        gender: Gender.MALE,
-        bloodType: 'O+',
-        allergies: ['peanuts'],
-      },
-    });
+  // ── Demo Children ─────────────────────────────────────────────
+  // Dates are relative to "today" so the demo data never goes stale
+  // (ages, overdue vaccines and upcoming milestones stay realistic).
+  await seedDemoChild(parent.id, {
+    name: 'Arjun',
+    gender: Gender.MALE,
+    ageMonths: 14,
+    bloodType: 'O+',
+    allergies: ['peanuts'],
+    // Measured at these ages; values follow the WHO standards at the z-scores below
+    growthMonths: [0, 2, 4, 6, 9, 12, 14],
+    growthZ: { weight: -0.3, lengthHeight: -0.1, headCircumference: 0.2 },
+    // Leave the most recently due schedule slot un-given so the demo shows an overdue vaccine.
+    skipLatestDueVaccines: true,
+  });
 
-    // Seed growth records
-    await prisma.growthRecord.createMany({
-      data: [
-        { childId: child.id, weight: 3.2, height: 50, headCirc: 34, bmi: 12.8, recordedAt: new Date('2023-01-20') },
-        { childId: child.id, weight: 4.5, height: 55, headCirc: 37, bmi: 14.9, recordedAt: new Date('2023-03-15') },
-        { childId: child.id, weight: 6.2, height: 62, headCirc: 40, bmi: 16.1, recordedAt: new Date('2023-06-10') },
-        { childId: child.id, weight: 8.1, height: 69, headCirc: 43, bmi: 17.0, recordedAt: new Date('2023-09-05') },
-        { childId: child.id, weight: 9.4, height: 74, headCirc: 45, bmi: 17.2, recordedAt: new Date('2023-12-01') },
-        { childId: child.id, weight: 10.2, height: 78, headCirc: 46, bmi: 16.8, recordedAt: new Date('2024-03-10') },
-      ],
-    });
-
-    // Seed vaccinations
-    await prisma.vaccination.createMany({
-      data: [
-        { childId: child.id, name: 'BCG', scheduledDate: new Date('2023-01-20'), administeredAt: new Date('2023-01-20'), batchNumber: 'BCG2023A' },
-        { childId: child.id, name: 'OPV-0', scheduledDate: new Date('2023-01-20'), administeredAt: new Date('2023-01-20') },
-        { childId: child.id, name: 'Hepatitis B (1st)', scheduledDate: new Date('2023-01-20'), administeredAt: new Date('2023-01-20') },
-        { childId: child.id, name: 'DTP (1st)', scheduledDate: new Date('2023-03-15'), administeredAt: new Date('2023-03-15') },
-        { childId: child.id, name: 'OPV (1st)', scheduledDate: new Date('2023-03-15'), administeredAt: new Date('2023-03-15') },
-        { childId: child.id, name: 'IPV (1st)', scheduledDate: new Date('2023-03-15'), administeredAt: new Date('2023-03-15') },
-        { childId: child.id, name: 'DTP (2nd)', scheduledDate: new Date('2023-05-15') },
-        { childId: child.id, name: 'MMR', scheduledDate: new Date('2024-01-15') },
-      ],
-    });
-
-    // Seed milestones
-    await prisma.milestone.createMany({
-      data: [
-        { childId: child.id, title: 'Holds head up', category: 'physical', ageMonth: 1, achieved: true, achievedAt: new Date('2023-02-15') },
-        { childId: child.id, title: 'Social smile', category: 'social', ageMonth: 2, achieved: true, achievedAt: new Date('2023-03-20') },
-        { childId: child.id, title: 'Rolls over', category: 'physical', ageMonth: 4, achieved: true, achievedAt: new Date('2023-05-10') },
-        { childId: child.id, title: 'Sits without support', category: 'physical', ageMonth: 6, achieved: true, achievedAt: new Date('2023-07-15') },
-        { childId: child.id, title: 'Crawls', category: 'physical', ageMonth: 8, achieved: true, achievedAt: new Date('2023-09-20') },
-        { childId: child.id, title: 'Says mama/dada', category: 'language', ageMonth: 8, achieved: true, achievedAt: new Date('2023-10-01') },
-        { childId: child.id, title: 'Stands with support', category: 'physical', ageMonth: 9, achieved: false },
-        { childId: child.id, title: 'Walks independently', category: 'physical', ageMonth: 12, achieved: false },
-        { childId: child.id, title: 'First word', category: 'language', ageMonth: 12, achieved: false },
-        { childId: child.id, title: 'Object permanence', category: 'cognitive', ageMonth: 8, achieved: true, achievedAt: new Date('2023-09-15') },
-        { childId: child.id, title: 'Pretend play', category: 'cognitive', ageMonth: 18, achieved: false },
-        { childId: child.id, title: 'Parallel play', category: 'social', ageMonth: 18, achieved: false },
-      ],
-    });
-
-    console.log('✅ Child Arjun created with health records');
-  }
+  await seedDemoChild(parent.id, {
+    name: 'Anaya',
+    gender: Gender.FEMALE,
+    ageMonths: 50,
+    bloodType: 'B+',
+    allergies: [],
+    growthMonths: [0, 6, 12, 18, 24, 36, 48],
+    growthZ: { weight: 0.4, lengthHeight: 0.5, headCircumference: 0.1 },
+    skipLatestDueVaccines: false,
+  });
 
   // ── Sample Posts ──────────────────────────────────────────────
   const existingPosts = await prisma.post.count({ where: { authorId: parent.id } });
@@ -167,7 +136,126 @@ async function main() {
   console.log('Test accounts:');
   console.log('  Admin:  admin@parento.com  / Admin@123');
   console.log('  Doctor: doctor@parento.com / Doctor@123');
-  console.log('  Parent: parent@parento.com / Parent@123');
+  console.log('  Parent: parent@parento.com / Parent@123  (children: Arjun, Anaya)');
+}
+
+// ── Demo child helper ─────────────────────────────────────────
+type Lms = [number, number, number];
+type GrowthZ = { weight: number; lengthHeight: number; headCircumference: number };
+
+/** Measurement at a given WHO z-score, from the official LMS tables. */
+function whoValue(indicator: keyof GrowthZ, gender: Gender, ageDays: number, z: number): number {
+  const sex = gender === Gender.FEMALE ? 'FEMALE' : 'MALE';
+  const table = (whoGrowth.indicators as unknown as Record<string, Record<string, Lms[]>>)[indicator][sex];
+  const [l, m, s] = table[Math.min(ageDays, table.length - 1)];
+  const v = l === 0 ? m * Math.exp(s * z) : m * Math.pow(1 + l * s * z, 1 / l);
+  return Math.round(v * 10) / 10;
+}
+
+function addMonths(date: Date, months: number): Date {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+}
+
+function addDays(date: Date, days: number): Date {
+  return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+}
+
+async function seedDemoChild(
+  parentId: string,
+  opts: {
+    name: string;
+    gender: Gender;
+    ageMonths: number;
+    bloodType: string;
+    allergies: string[];
+    growthMonths: number[];
+    growthZ: GrowthZ;
+    skipLatestDueVaccines: boolean;
+  },
+) {
+  const existing = await prisma.child.findFirst({ where: { parentId, name: opts.name } });
+  if (existing) {
+    console.log(`ℹ️  Child ${opts.name} already exists, skipping`);
+    return;
+  }
+
+  const today = new Date();
+  const dob = addMonths(today, -opts.ageMonths);
+  const child = await prisma.child.create({
+    data: {
+      parentId,
+      name: opts.name,
+      dateOfBirth: dob,
+      gender: opts.gender,
+      bloodType: opts.bloodType,
+      allergies: opts.allergies,
+    },
+  });
+
+  // Growth records generated from the WHO Child Growth Standards
+  await prisma.growthRecord.createMany({
+    data: opts.growthMonths.map((month) => {
+      const recordedAt = addDays(addMonths(dob, month), month === 0 ? 2 : 0);
+      const days = Math.round((recordedAt.getTime() - dob.getTime()) / (24 * 60 * 60 * 1000));
+      const weight = whoValue('weight', opts.gender, days, opts.growthZ.weight);
+      const height = whoValue('lengthHeight', opts.gender, days, opts.growthZ.lengthHeight);
+      const headCirc = whoValue('headCircumference', opts.gender, days, opts.growthZ.headCircumference);
+      return {
+        childId: child.id,
+        weight,
+        height,
+        headCirc,
+        bmi: Math.round((weight / Math.pow(height / 100, 2)) * 10) / 10,
+        recordedAt,
+      };
+    }),
+  });
+
+  // Vaccinations from the IAP schedule dataset: past slots given, next slots scheduled
+  const ageWeeks = (today.getTime() - dob.getTime()) / (7 * 24 * 60 * 60 * 1000);
+  const timed = (vaccineSchedule.schedule as { ageLabel: string; ageWeeks: number | null; vaccines: string[]; catchUpOnly?: boolean }[])
+    .filter((s): s is { ageLabel: string; ageWeeks: number; vaccines: string[] } => s.ageWeeks !== null && !s.catchUpOnly);
+  const due = timed.filter((s) => s.ageWeeks <= ageWeeks);
+  const upcoming = timed.filter((s) => s.ageWeeks > ageWeeks).slice(0, 2);
+  const skipped = opts.skipLatestDueVaccines ? due[due.length - 1] : undefined;
+
+  const vaccinationRows = [
+    ...due.flatMap((slot) => {
+      const date = addDays(dob, slot.ageWeeks * 7);
+      return slot.vaccines.map((name) => ({
+        childId: child.id,
+        name,
+        scheduledDate: date,
+        administeredAt: slot === skipped ? null : date,
+      }));
+    }),
+    ...upcoming.flatMap((slot) =>
+      slot.vaccines.map((name) => ({
+        childId: child.id,
+        name,
+        scheduledDate: addDays(dob, slot.ageWeeks * 7),
+        administeredAt: null,
+      })),
+    ),
+  ];
+  await prisma.vaccination.createMany({ data: vaccinationRows });
+
+  // Milestones: same standard list the app creates for new children;
+  // everything due before the child's current age is marked achieved.
+  await ChildService._seedMilestones(child.id);
+  const milestones = await prisma.milestone.findMany({ where: { childId: child.id } });
+  for (const m of milestones) {
+    if (m.ageMonth <= opts.ageMonths - 1) {
+      await prisma.milestone.update({
+        where: { id: m.id },
+        data: { achieved: true, achievedAt: addMonths(dob, m.ageMonth) },
+      });
+    }
+  }
+
+  console.log(`✅ Child ${opts.name} (${opts.ageMonths} months) created with growth, vaccination and milestone records`);
 }
 
 main()

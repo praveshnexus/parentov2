@@ -99,6 +99,7 @@ export const notificationsApi = {
 // ── AI ────────────────────────────────────────────────────────
 export const aiApi = {
   summary: (childId: string) => api.get(`/ai/summary/${childId}`),
+  status: () => api.get('/ai/status'),
   // Note: chat uses SSE, not axios — see useAiChat hook
 };
 

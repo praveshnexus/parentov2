@@ -718,7 +718,7 @@ function ChildDetail({
             <Button
               size="sm"
               variant="outline"
-              className="border-white/40 text-white hover:bg-white/10"
+              className="!border-white/60 !bg-transparent !text-white hover:!bg-white/10"
               onClick={() => onEdit(child)}
             >
               Edit
@@ -727,7 +727,7 @@ function ChildDetail({
               <Button
                 size="sm"
                 variant="outline"
-                className="border-white/40 text-white hover:bg-white/10"
+                className="!border-white/60 !bg-transparent !text-white hover:!bg-white/10"
                 leftIcon={<Plus size={13} />}
                 onClick={() => setShowGrowth(true)}
               >

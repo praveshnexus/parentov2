@@ -1,0 +1,245 @@
+{
+  "source": "Parento editorial knowledge base, summarised from public guidance by WHO, AAP, IAP and CDC. General information only, not medical advice.",
+  "entries": [
+    {
+      "id": "fever-infant",
+      "topic": "Fever in babies under 3 months",
+      "keywords": ["fever", "temperature", "hot", "newborn", "infant", "38", "100.4"],
+      "maxAgeMonths": 3,
+      "urgent": true,
+      "answer": "- In a baby **under 3 months**, a temperature of **38°C (100.4°F) or higher** needs a doctor **right away**, even if the baby seems fine.\n- Do not give fever medicine to a young infant unless a doctor tells you to.\n- Keep feeding and dress the baby in light clothing while you get care."
+    },
+    {
+      "id": "fever",
+      "topic": "Fever in children",
+      "keywords": ["fever", "temperature", "hot", "paracetamol", "thermometer", "feverish"],
+      "minAgeMonths": 3,
+      "answer": "- A fever is usually a sign the body is fighting an infection. How the child **acts** matters more than the exact number.\n- Offer plenty of fluids, keep clothing light and let the child rest.\n- Ask your doctor or pharmacist about the right fever medicine and dose for your child's **weight**.\n- See a doctor if the fever lasts **more than 2-3 days**, goes above **40°C (104°F)**, or comes with a rash, stiff neck, trouble breathing, unusual sleepiness, or signs of dehydration."
+    },
+    {
+      "id": "dehydration",
+      "topic": "Signs of dehydration",
+      "keywords": ["dehydration", "dehydrated", "dry", "urine", "pee", "wet diaper", "nappy", "fluids", "thirsty"],
+      "urgent": false,
+      "answer": "- Watch for **fewer wet diapers** (fewer than 4 in 24 hours for a baby), dark urine, a dry mouth, no tears when crying, a sunken soft spot, or unusual sleepiness.\n- Keep offering breast milk or formula; older children can take small, frequent sips of **ORS** (oral rehydration solution).\n- Get medical help quickly if the child is very drowsy, has had no urine for 8 hours or more, or cannot keep fluids down."
+    },
+    {
+      "id": "diarrhea",
+      "topic": "Diarrhoea and vomiting",
+      "keywords": ["diarrhea", "diarrhoea", "loose", "motion", "stool", "vomit", "vomiting", "stomach", "ors", "zinc"],
+      "answer": "- The main risk is **dehydration**, so give **ORS** in small, frequent sips and continue breastfeeding or normal feeds.\n- In India, doctors commonly add **zinc** for 10-14 days for diarrhoea; ask your pediatrician for the right dose.\n- Avoid fruit juices and sugary drinks, which can make diarrhoea worse.\n- See a doctor for blood in the stool, repeated vomiting, a high fever, signs of dehydration, or diarrhoea lasting more than a few days."
+    },
+    {
+      "id": "constipation",
+      "topic": "Constipation",
+      "keywords": ["constipation", "constipated", "hard stool", "potty", "poop", "bowel", "straining"],
+      "answer": "- Hard, dry or painful stools are more important than how often the child goes.\n- For children on solids, offer water, fruits like pear, papaya and prunes, vegetables and whole grains.\n- Encourage active play and a relaxed potty routine after meals.\n- See a doctor if there is blood, a swollen tummy, vomiting, or constipation in a young baby who is not yet on solids."
+    },
+    {
+      "id": "cough-cold",
+      "topic": "Cough and cold",
+      "keywords": ["cough", "cold", "runny nose", "blocked nose", "congestion", "sneeze", "sneezing", "flu"],
+      "answer": "- Most colds get better on their own in 7-10 days.\n- Saline nose drops and gentle suction help blocked noses, especially before feeds and sleep.\n- **Do not give honey to babies under 12 months**, and avoid over-the-counter cough and cold medicines for young children unless a doctor advises them.\n- Get help quickly for fast or noisy breathing, the skin pulling in between the ribs, bluish lips, or a baby who is too breathless to feed."
+    },
+    {
+      "id": "breathing-emergency",
+      "topic": "Breathing difficulty",
+      "keywords": ["breathing", "breathe", "breathless", "wheezing", "choking", "blue", "gasping"],
+      "urgent": true,
+      "answer": "- **Trouble breathing, bluish lips or face, choking, or gasping is an emergency.** Call emergency services (112 in India) or go to the nearest hospital immediately.\n- If the child is choking and cannot cry, cough or breathe, start infant or child choking first aid if you are trained, and call for help."
+    },
+    {
+      "id": "starting-solids",
+      "topic": "Starting solid foods",
+      "keywords": ["solids", "solid food", "weaning", "complementary", "first food", "puree", "cereal", "start eating", "6 months"],
+      "maxAgeMonths": 18,
+      "answer": "- Start solids at **around 6 months**, when the baby can sit with support, has good head control and shows interest in food.\n- Begin with smooth or mashed foods such as rice-dal khichdi, mashed banana, or vegetable purées, then slowly increase texture and variety.\n- Introduce **iron-rich foods** early (dal, egg yolk, meat, fortified cereals, green leafy vegetables).\n- Continue breastfeeding alongside solids. Avoid added salt, sugar and honey in the first year."
+    },
+    {
+      "id": "breastfeeding",
+      "topic": "Breastfeeding",
+      "keywords": ["breastfeed", "breastfeeding", "breast milk", "latch", "nursing", "feeding newborn", "milk supply"],
+      "answer": "- WHO recommends **exclusive breastfeeding for the first 6 months**, then continuing breastfeeding along with solid foods up to 2 years or beyond.\n- Newborns usually feed **8-12 times in 24 hours**. Feed on demand.\n- Signs the baby is getting enough include 6 or more wet diapers a day after the first week and steady weight gain.\n- Pain while feeding often means a latch problem, so a lactation consultant or your pediatrician can help."
+    },
+    {
+      "id": "eating-enough",
+      "topic": "Is my child eating enough",
+      "keywords": ["eating enough", "picky", "fussy eater", "not eating", "appetite", "poor appetite", "food refusal", "eats less"],
+      "minAgeMonths": 6,
+      "answer": "- Toddler appetite naturally goes up and down, and growth slows after the first year, so they often eat less than parents expect.\n- Offer 3 meals and 2 snacks at regular times, and let the child decide how much to eat.\n- Offer a new food many times (10-15 tries) without pressure.\n- The best check is a **steady growth curve**. Talk to a doctor if the child is losing weight, has low energy, or is crossing down growth lines."
+    },
+    {
+      "id": "cow-milk",
+      "topic": "Cow's milk and water",
+      "keywords": ["cow milk", "cows milk", "milk", "water", "juice", "drink"],
+      "answer": "- Avoid cow's milk as a **main drink before 12 months**; breast milk or formula is best in the first year.\n- From 6 months, small sips of water with meals are fine.\n- After 12 months, around **2 cups (about 400-500 ml) of milk a day** is usually enough; too much milk can reduce appetite and contribute to iron deficiency.\n- Fruit juice is not needed. Whole fruit is better."
+    },
+    {
+      "id": "allergy-intro",
+      "topic": "Food allergies",
+      "keywords": ["allergy", "allergic", "peanut", "egg", "rash after eating", "hives", "food allergy"],
+      "answer": "- Common allergy foods such as egg and peanut (as smooth paste, **never whole nuts**) can usually be introduced from around 6 months, one at a time.\n- If your child already has severe eczema or a known allergy, talk to your doctor before introducing these foods.\n- **Swelling of the lips or face, trouble breathing, or repeated vomiting after a food is an emergency.** Seek care immediately.\n- If a known allergy is recorded in Parento, always avoid that food unless your doctor advises otherwise."
+    },
+    {
+      "id": "choking-foods",
+      "topic": "Choking-risk foods",
+      "keywords": ["choke", "choking", "grapes", "nuts", "popcorn", "safe food", "finger food"],
+      "maxAgeMonths": 60,
+      "answer": "- For children under 4-5 years, avoid **whole nuts, whole grapes, popcorn, hard candies and chunks of raw carrot or apple**.\n- Cut round foods like grapes and cherry tomatoes into quarters lengthwise.\n- Always supervise meals and keep the child seated while eating."
+    },
+    {
+      "id": "sleep-baby",
+      "topic": "Baby sleep",
+      "keywords": ["sleep", "sleeping", "nap", "night waking", "wake up", "bedtime", "sleep regression", "won't sleep"],
+      "answer": "- Typical sleep needs: newborns 14-17 hours, 4-12 months 12-16 hours (with naps), 1-2 years 11-14 hours, 3-5 years 10-13 hours.\n- A calm, predictable bedtime routine (bath, feed, book, song) helps.\n- Night waking and 'sleep regressions' around 4, 8-10 and 18 months are common and usually pass in a few weeks.\n- Talk to a doctor about loud snoring with pauses in breathing or extreme daytime sleepiness."
+    },
+    {
+      "id": "safe-sleep",
+      "topic": "Safe sleep",
+      "keywords": ["safe sleep", "sids", "sleep position", "back to sleep", "crib", "cot", "co-sleeping", "pillow"],
+      "maxAgeMonths": 12,
+      "answer": "- Always place babies **on their back** to sleep, on a firm, flat surface.\n- Keep pillows, quilts, soft toys and bumpers out of the sleep space.\n- Room-sharing (baby in their own cot near your bed) is recommended for the first 6 months.\n- Avoid overheating and keep the baby's environment smoke-free."
+    },
+    {
+      "id": "teething",
+      "topic": "Teething",
+      "keywords": ["teething", "teeth", "tooth", "drooling", "gums", "biting"],
+      "maxAgeMonths": 36,
+      "answer": "- First teeth usually appear between **6 and 12 months**.\n- Drooling, chewing and mild fussiness are common. Teething does **not** cause high fever or diarrhoea; see a doctor if those happen.\n- A clean, chilled (not frozen) teething ring or gently rubbing the gums with a clean finger can help.\n- Avoid teething gels containing benzocaine and amber teething necklaces."
+    },
+    {
+      "id": "colic",
+      "topic": "Crying and colic",
+      "keywords": ["crying", "cry", "colic", "fussy", "inconsolable", "gas", "burp"],
+      "maxAgeMonths": 6,
+      "answer": "- Colic means a healthy baby crying for more than 3 hours a day, often in the evening. It usually peaks around 6 weeks and improves by 3-4 months.\n- Try holding, gentle rocking, white noise, swaddling (for young babies) and burping during feeds.\n- **Never shake a baby.** If you feel overwhelmed, put the baby safely in the cot and take a short break.\n- See a doctor if crying comes with fever, vomiting, poor feeding, or a high-pitched cry."
+    },
+    {
+      "id": "diaper-rash",
+      "topic": "Diaper rash",
+      "keywords": ["diaper rash", "nappy rash", "rash", "red bottom", "diaper"],
+      "answer": "- Change diapers often, clean gently with water, and let the skin air-dry.\n- A thick layer of zinc oxide or petroleum jelly barrier cream protects the skin.\n- See a doctor if the rash has blisters or pus, spreads, or does not improve in 2-3 days (it may be a yeast infection)."
+    },
+    {
+      "id": "jaundice",
+      "topic": "Newborn jaundice",
+      "keywords": ["jaundice", "yellow", "yellow skin", "bilirubin"],
+      "maxAgeMonths": 2,
+      "answer": "- Mild yellowing in the first week is common.\n- See a doctor **promptly** if jaundice appears in the first 24 hours, spreads to the legs or palms, lasts beyond 2 weeks, or the baby is very sleepy or feeding poorly.\n- Pale or chalky stools with dark urine need urgent review."
+    },
+    {
+      "id": "speech",
+      "topic": "Speech and language development",
+      "keywords": ["speech", "talk", "talking", "words", "language", "not talking", "speech delay", "babble"],
+      "answer": "- Talk, sing and read with your child every day, and name objects and actions as you go.\n- Respond to babbling and gestures as if it's a conversation, and pause to give them a turn.\n- Limit screen time, which reduces back-and-forth talk.\n- Talk to your doctor about a hearing check and speech assessment if there's no babbling by 9 months, no words by 16 months, or no two-word phrases by 24 months."
+    },
+    {
+      "id": "motor",
+      "topic": "Encouraging movement and walking",
+      "keywords": ["walk", "walking", "crawl", "crawling", "tummy time", "motor", "sit", "stand", "physical development"],
+      "answer": "- Daily **tummy time** from the first weeks builds neck, back and arm strength.\n- Give safe floor space to roll, crawl and pull up. Baby walkers are not recommended because they cause injuries and do not speed up walking.\n- Most children walk independently between 9 and 18 months.\n- See a doctor if the child is not sitting by 9 months, not walking by 18 months, or loses skills."
+    },
+    {
+      "id": "cognitive-play",
+      "topic": "Activities for cognitive growth",
+      "keywords": ["cognitive", "activities", "play", "brain", "learning", "games", "development activities", "stimulation"],
+      "answer": "- Peek-a-boo, hiding toys under a cloth, stacking cups, shape sorters and simple puzzles build problem-solving.\n- Read picture books daily and talk about what you see.\n- Pretend play (cooking, doctor sets, dolls) builds imagination and language.\n- Follow your child's interests; short, frequent play sessions work better than long ones."
+    },
+    {
+      "id": "screen-time",
+      "topic": "Screen time",
+      "keywords": ["screen", "screen time", "tv", "phone", "mobile", "tablet", "youtube", "cartoons"],
+      "answer": "- WHO and AAP advise **avoiding screens before 18-24 months**, except video calls with family.\n- For **2-5 years**, limit screen time to **about 1 hour a day** of good-quality content, watched together when possible.\n- Keep screens off during meals and for at least an hour before bed."
+    },
+    {
+      "id": "tantrums",
+      "topic": "Tantrums and behaviour",
+      "keywords": ["tantrum", "tantrums", "behaviour", "behavior", "anger", "hitting", "biting others", "discipline", "meltdown"],
+      "minAgeMonths": 12,
+      "answer": "- Tantrums are normal between 1 and 4 years, while children are learning to handle big feelings.\n- Stay calm, keep the child safe, and name the feeling ('You're upset because...').\n- Praise good behaviour specifically, and keep routines predictable.\n- Avoid hitting or shouting. Talk to a doctor if tantrums are very frequent, very long, or the child hurts themselves."
+    },
+    {
+      "id": "potty-training",
+      "topic": "Potty training",
+      "keywords": ["potty", "toilet", "potty training", "toilet training", "bedwetting"],
+      "minAgeMonths": 15,
+      "answer": "- Most children are ready between **18 months and 3 years**. Signs include staying dry for 2 hours, showing discomfort with a dirty diaper, and following simple instructions.\n- Use a potty at regular times (after meals, before bath) and praise attempts.\n- Expect accidents and never punish them.\n- Night-time dryness often comes later, and bedwetting is common up to 5-6 years."
+    },
+    {
+      "id": "vaccine-side-effects",
+      "topic": "After vaccination",
+      "keywords": ["after vaccination", "after vaccine", "side effect", "injection", "shot", "jab", "swelling", "watch for"],
+      "answer": "- Mild fever, fussiness, and redness or swelling at the injection site for 1-2 days are common.\n- Keep feeding normally, cuddle and comfort the child, and ask your doctor about fever medicine.\n- Seek care urgently for difficulty breathing, swelling of the face or lips, a seizure, crying for more than 3 hours, or unusual drowsiness."
+    },
+    {
+      "id": "missed-vaccine",
+      "topic": "Missed or delayed vaccines",
+      "keywords": ["missed vaccine", "overdue", "late vaccine", "catch up", "delayed vaccine", "catch-up"],
+      "answer": "- A missed vaccine usually **does not need to be restarted**. Your pediatrician can give a **catch-up schedule**.\n- Book an appointment soon, since delays leave the child unprotected for longer.\n- Bring the vaccination card so the doctor can see what has already been given."
+    },
+    {
+      "id": "when-doctor",
+      "topic": "When to see a doctor",
+      "keywords": ["see a doctor", "when to see", "doctor", "hospital", "emergency", "worried", "warning signs", "red flags"],
+      "answer": "- **Go to a hospital immediately** for trouble breathing, bluish lips, a seizure, unresponsiveness, severe dehydration, a non-blanching rash (spots that don't fade when pressed), or any fever in a baby under 3 months.\n- **See a doctor the same day** for a fever lasting more than 2-3 days, ear pain, repeated vomiting, or a child who is unusually drowsy or irritable.\n- Trust your instincts. If you feel something is wrong, get the child checked."
+    },
+    {
+      "id": "common-illnesses",
+      "topic": "Common childhood illnesses",
+      "keywords": ["common illnesses", "illness", "sick", "infection", "ear infection", "hand foot mouth", "viral"],
+      "answer": "- Young children commonly get **6-10 colds a year**, especially after starting daycare.\n- Other common illnesses are ear infections, viral stomach bugs, hand-foot-and-mouth disease, and viral rashes.\n- Good handwashing, up-to-date vaccines, and breastfeeding (for infants) all reduce infections.\n- Watch hydration, breathing and alertness, and see a doctor if any of these are affected."
+    },
+    {
+      "id": "iron-vitamins",
+      "topic": "Iron and vitamins",
+      "keywords": ["iron", "vitamin", "vitamin d", "supplement", "anemia", "anaemia", "multivitamin"],
+      "answer": "- Iron needs rise from about 6 months, so offer iron-rich foods daily (dal, eggs, meat, ragi, green leafy vegetables) with vitamin C foods to help absorption.\n- Many pediatricians recommend **vitamin D drops** for breastfed infants. Ask your doctor about the right dose for your child.\n- Don't start supplements without medical advice, since too much iron can be harmful."
+    },
+    {
+      "id": "growth-concern",
+      "topic": "Weight and height concerns",
+      "keywords": ["weight", "height", "growth", "underweight", "overweight", "short", "tall", "bmi", "gaining weight", "not gaining"],
+      "answer": "- Growth is best judged by the **trend over time** on a growth chart, not one number.\n- Most babies double their birth weight by about 5 months and triple it by 12 months.\n- Talk to your doctor if your child's measurements fall below the 3rd or above the 97th percentile, or cross two major percentile lines."
+    },
+    {
+      "id": "head-injury",
+      "topic": "Falls and head injury",
+      "keywords": ["fell", "fall", "head injury", "bump", "hit head", "fell from bed"],
+      "urgent": true,
+      "answer": "- **Seek emergency care** after a head injury if the child loses consciousness, vomits more than once, has a seizure, is unusually sleepy or confused, or has clear fluid or blood from the nose or ears.\n- For babies under 1 year, any significant fall should be checked by a doctor.\n- For minor bumps, apply a cold compress and watch the child closely for 24 hours."
+    },
+    {
+      "id": "poisoning",
+      "topic": "Swallowed medicine, chemicals or batteries",
+      "keywords": ["swallowed", "poison", "poisoning", "battery", "button battery", "chemical", "ate medicine", "magnet"],
+      "urgent": true,
+      "answer": "- **This is an emergency.** Go to the nearest hospital or call emergency services (112 in India) immediately.\n- Swallowed **button batteries or magnets** can cause serious internal injury within hours, even if the child seems fine.\n- Do not make the child vomit. Take the container or packet with you."
+    },
+    {
+      "id": "seizure",
+      "topic": "Seizures and fits",
+      "keywords": ["seizure", "fit", "convulsion", "febrile seizure", "shaking", "unconscious", "unresponsive"],
+      "urgent": true,
+      "answer": "- **During a seizure:** lay the child on their side on a safe surface, do not put anything in their mouth, and note the time.\n- **Call emergency services (112) if it lasts more than 5 minutes**, if breathing is difficult, or if it's the first seizure.\n- Every first seizure needs a medical evaluation, even if the child recovers quickly."
+    },
+    {
+      "id": "hygiene",
+      "topic": "Bathing and hygiene",
+      "keywords": ["bath", "bathing", "umbilical", "cord", "hygiene", "skin care", "massage", "oil"],
+      "maxAgeMonths": 12,
+      "answer": "- Keep the umbilical cord stump clean and dry until it falls off (usually 1-3 weeks).\n- 2-3 baths a week are enough for young babies. Use lukewarm water and test it with your elbow.\n- Gentle massage with a mild oil is fine. Avoid putting oil in the nose or ears.\n- Never leave a baby alone in the bath, even for a moment."
+    },
+    {
+      "id": "car-safety",
+      "topic": "Car and home safety",
+      "keywords": ["car seat", "safety", "childproof", "baby proof", "stairs", "drowning", "burns"],
+      "answer": "- Use a **rear-facing car seat** for as long as the seat allows, and never hold a child on your lap in a moving car.\n- Install stair gates, cover sockets, anchor heavy furniture, and keep medicines and chemicals locked away.\n- Children can drown in a few centimetres of water, so empty buckets and supervise bath time."
+    },
+    {
+      "id": "parent-wellbeing",
+      "topic": "Parent stress and postpartum mood",
+      "keywords": ["stressed", "exhausted", "tired", "postpartum", "depressed", "anxious", "overwhelmed", "baby blues"],
+      "answer": "- Feeling tired and overwhelmed is very common, and asking for help is a strength.\n- 'Baby blues' usually ease within 2 weeks. If low mood, anxiety or hopelessness lasts longer, please talk to your doctor, since postpartum depression is common and treatable.\n- If you ever have thoughts of harming yourself or your baby, seek help immediately: in India you can call **Tele-MANAS at 14416**, or emergency services at 112."
+    }
+  ]
+}

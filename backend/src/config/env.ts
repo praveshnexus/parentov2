@@ -20,7 +20,9 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
-  ANTHROPIC_API_KEY: z.string().min(1),
+  // Optional: without a valid key the AI assistant runs on the built-in knowledge base.
+  ANTHROPIC_API_KEY: z.string().optional(),
+  ANTHROPIC_MODEL: z.string().min(1).default('claude-sonnet-5-5'),
 });
 
 const parsed = envSchema.safeParse(process.env);

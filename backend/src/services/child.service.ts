@@ -1,6 +1,7 @@
 import { prisma } from "../config/prisma";
 import { NotFoundError, ForbiddenError } from "../utils/errors";
 import { Gender } from "@prisma/client";
+import cdcMilestones from "../data/knowledge/milestones.json";
 
 export const ChildService = {
   async getChildren(parentId: string) {
@@ -167,44 +168,17 @@ export const ChildService = {
     });
   },
 
+  /**
+   * Creates the standard milestone checklist for a new child from the official
+   * CDC "Learn the Signs. Act Early." checklists (src/data/knowledge/milestones.json),
+   * 2 months to 5 years, grouped as physical / cognitive / social / language.
+   */
   async _seedMilestones(childId: string) {
-    const milestones = [
-      // Physical
-      { title: "Holds head up", category: "physical", ageMonth: 1 },
-      { title: "Rolls over", category: "physical", ageMonth: 4 },
-      { title: "Sits without support", category: "physical", ageMonth: 6 },
-      { title: "Crawls", category: "physical", ageMonth: 8 },
-      { title: "Stands with support", category: "physical", ageMonth: 9 },
-      { title: "Walks independently", category: "physical", ageMonth: 12 },
-      { title: "Runs", category: "physical", ageMonth: 18 },
-      { title: "Jumps", category: "physical", ageMonth: 24 },
-      // Cognitive
-      { title: "Tracks moving objects", category: "cognitive", ageMonth: 2 },
-      {
-        title: "Recognizes familiar faces",
-        category: "cognitive",
-        ageMonth: 3,
-      },
-      { title: "Explores objects", category: "cognitive", ageMonth: 6 },
-      { title: "Object permanence", category: "cognitive", ageMonth: 8 },
-      { title: "Solves simple problems", category: "cognitive", ageMonth: 12 },
-      { title: "Pretend play", category: "cognitive", ageMonth: 18 },
-      // Social
-      { title: "Social smile", category: "social", ageMonth: 2 },
-      { title: "Laughs", category: "social", ageMonth: 4 },
-      { title: "Responds to name", category: "social", ageMonth: 6 },
-      { title: "Waves bye-bye", category: "social", ageMonth: 9 },
-      { title: "Parallel play", category: "social", ageMonth: 18 },
-      { title: "Cooperative play", category: "social", ageMonth: 36 },
-      // Language
-      { title: "Coos", category: "language", ageMonth: 2 },
-      { title: "Babbles", category: "language", ageMonth: 4 },
-      { title: "Says mama/dada", category: "language", ageMonth: 8 },
-      { title: "First word", category: "language", ageMonth: 12 },
-      { title: "10 words vocabulary", category: "language", ageMonth: 18 },
-      { title: "50 words vocabulary", category: "language", ageMonth: 24 },
-      { title: "Simple sentences", category: "language", ageMonth: 24 },
-    ];
+    const milestones = cdcMilestones.ages.flatMap((band) =>
+      (["physical", "cognitive", "social", "language"] as const).flatMap((category) =>
+        band[category].map((title) => ({ title, category, ageMonth: band.ageMonth })),
+      ),
+    );
 
     await prisma.milestone.createMany({
       data: milestones.map((m) => ({ ...m, childId })),

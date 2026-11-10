@@ -265,14 +265,14 @@ export function TopNav() {
           {/* Right actions */}
           {user ? (
             <div className="flex items-center gap-0.5">
-              {/* AI — mobile top nav */}
-              <Link to="/ai"
+              {/* AI assistant (parents only — the /ai route is parent-only) */}
+              {user.role === 'PARENT' && <Link to="/ai" title="Parento AI"
                 className={clsx(
-                  'lg:hidden w-9 h-9 flex items-center justify-center rounded-full transition-colors',
+                  'w-9 h-9 flex items-center justify-center rounded-full transition-colors',
                   location.pathname === '/ai' ? 'text-primary-500 bg-primary-50' : 'text-ink-secondary hover:bg-gray-100'
                 )}>
                 <Sparkles size={18} />
-              </Link>
+              </Link>}
 
               {/* Search */}
               <Link to="/search"

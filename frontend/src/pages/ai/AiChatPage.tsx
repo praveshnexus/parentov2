@@ -14,9 +14,11 @@ import {
   Loader2,
   ShieldAlert,
   X,
+  Square,
+  BookOpen,
 } from "lucide-react";
 import { childrenApi, aiApi } from "@/api/services";
-import { useAiChat } from "@/hooks/useAiChat";
+import { useAiChat, type ChatMessage } from "@/hooks/useAiChat";
 import { Avatar, Card, Skeleton } from "@/components/ui";
 import { useAuth } from "@/context/AuthContext";
 import type { Child } from "@/types";
@@ -180,6 +182,14 @@ function MdText({ text }: { text: string }) {
             </div>
           );
         if (!line.trim()) return <div key={i} className="h-1" />;
+        // A whole line in _underscores_ or *asterisks* = italic note (e.g. disclaimers)
+        const italic = line.trim().match(/^(?:_([^_]+)_|\*([^*]+)\*)$/);
+        if (italic)
+          return (
+            <p key={i} className="text-xs italic text-ink-muted leading-relaxed mt-1">
+              {italic[1] ?? italic[2]}
+            </p>
+          );
         return (
           <p key={i} className="text-sm leading-relaxed">
             {line
@@ -203,7 +213,7 @@ function Bubble({
   userName,
   userAvatar,
 }: {
-  msg: any;
+  msg: ChatMessage;
   userName: string;
   userAvatar?: string;
 }) {
@@ -242,6 +252,11 @@ function Bubble({
             {msg.isStreaming && (
               <span className="inline-block w-1.5 h-4 bg-primary-400 rounded-sm ml-1 animate-pulse align-middle" />
             )}
+            {!msg.isStreaming && msg.source === "knowledge-base" && (
+              <p className="mt-2 pt-2 border-t border-gray-100 flex items-center gap-1 text-[10px] text-ink-muted">
+                <BookOpen size={10} /> Answered from Parento's knowledge base
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -251,8 +266,15 @@ function Bubble({
 
 export default function AiChatPage() {
   const { user } = useAuth();
-  const { messages, isStreaming, error, sendMessage, clearHistory } =
+  const { messages, isStreaming, error, sendMessage, stop, clearHistory } =
     useAiChat();
+  const { data: statusData } = useQuery({
+    queryKey: ["ai-status"],
+    queryFn: () => aiApi.status(),
+    staleTime: 5 * 60_000,
+  });
+  const aiMode: "claude" | "knowledge-base" | undefined =
+    statusData?.data?.data?.mode;
   const [input, setInput] = useState("");
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -430,6 +452,8 @@ export default function AiChatPage() {
             {hasMessages && (
               <button
                 onClick={clearHistory}
+                title="New conversation"
+                aria-label="New conversation"
                 className="p-1.5 rounded-xl hover:bg-gray-100 text-ink-muted transition-colors"
               >
                 <RotateCcw size={15} />
@@ -578,25 +602,40 @@ export default function AiChatPage() {
                 rows={1}
                 className="flex-1 resize-none bg-transparent text-sm text-ink-primary placeholder:text-ink-muted focus:outline-none min-h-[22px] max-h-[120px]"
               />
-              <button
-                onClick={handleSend}
-                disabled={!input.trim() || !selectedChildId || isStreaming}
-                className={clsx(
-                  "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all",
-                  input.trim() && selectedChildId && !isStreaming
-                    ? "bg-primary-500 text-white hover:bg-primary-600 active:scale-95"
-                    : "bg-gray-100 text-ink-muted cursor-not-allowed",
-                )}
-              >
-                {isStreaming ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
+              {isStreaming ? (
+                <button
+                  onClick={stop}
+                  title="Stop generating"
+                  aria-label="Stop generating"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all bg-primary-50 text-primary-500 hover:bg-primary-100 active:scale-95"
+                >
+                  {messages[messages.length - 1]?.content ? (
+                    <Square size={14} className="fill-current" />
+                  ) : (
+                    <Loader2 size={16} className="animate-spin" />
+                  )}
+                </button>
+              ) : (
+                <button
+                  onClick={handleSend}
+                  disabled={!input.trim() || !selectedChildId}
+                  aria-label="Send message"
+                  className={clsx(
+                    "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all",
+                    input.trim() && selectedChildId
+                      ? "bg-primary-500 text-white hover:bg-primary-600 active:scale-95"
+                      : "bg-gray-100 text-ink-muted cursor-not-allowed",
+                  )}
+                >
                   <Send size={16} />
-                )}
-              </button>
+                </button>
+              )}
             </div>
             <p className="text-center text-[10px] text-ink-muted mt-1.5">
-              Not medical advice · Powered by Claude
+              Not medical advice ·{" "}
+              {aiMode === "knowledge-base"
+                ? "Powered by Parento's knowledge base"
+                : "Powered by Claude"}
             </p>
           </div>
         </div>

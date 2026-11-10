@@ -18,7 +18,7 @@ Parento is a full-stack parenting platform designed to help parents manage their
 
 The project follows a modern full-stack architecture using React on the frontend and Node.js with TypeScript on the backend, powered by PostgreSQL, Prisma ORM, Redis, and Docker.
 
-> **Note:** AI-powered parenting assistance is planned for a future release.
+> **Parento AI:** parents can chat with an assistant about each child's growth, vaccinations and milestones. It uses Claude when an Anthropic API key is configured, and falls back to a built-in knowledge base otherwise (see [Parento AI](#-parento-ai)).
 
 ---
 
@@ -35,6 +35,7 @@ The project follows a modern full-stack architecture using React on the frontend
 - Likes, comments & bookmarks
 - Real-time notifications
 - Personal dashboard
+- Parento AI child-health assistant (streaming chat, per-child context)
 
 ---
 
@@ -113,7 +114,7 @@ parento/
 │   │   ├── repositories/
 │   │   ├── routes/
 │   │   ├── services/
-│   │   ├── types/
+│   │   ├── data/          (Parento AI knowledge base)
 │   │   ├── utils/
 │   │   └── validators/
 │   ├── Dockerfile
@@ -191,6 +192,22 @@ npm run db:migrate
 
 ---
 
+## Seed Demo Data (optional)
+
+```bash
+npm run db:seed
+```
+
+Creates demo accounts and a parent with two children (Arjun, 14 months, and Anaya, about 4 years) whose growth, vaccination and milestone records are dated relative to today.
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@parento.com | Admin@123 |
+| Doctor | doctor@parento.com | Doctor@123 |
+| Parent | parent@parento.com | Parent@123 |
+
+---
+
 ## Start Development
 
 ```bash
@@ -234,7 +251,31 @@ The backend requires the following environment variables.
 | CLOUDINARY_CLOUD_NAME | Cloudinary cloud |
 | CLOUDINARY_API_KEY | Cloudinary key |
 | CLOUDINARY_API_SECRET | Cloudinary secret |
-| ANTHROPIC_API_KEY | *(Future AI Integration)* |
+| ANTHROPIC_API_KEY | *(Optional)* Anthropic key for Parento AI. Without a valid key the assistant uses the built-in knowledge base |
+| ANTHROPIC_MODEL | *(Optional)* Claude model ID, default `claude-sonnet-5-5` |
+
+---
+
+# 🤖 Parento AI
+
+Parents open **Parento AI** (✨ icon in the top bar, or `/ai`), pick a child, and ask questions. Replies stream in real time over Server-Sent Events.
+
+- **With a valid `ANTHROPIC_API_KEY`:** Claude answers using the child's real records (growth, vaccinations, milestones, allergies, medications) plus the most relevant knowledge-base entries for the question.
+- **Without a key, or if the API is unreachable:** the assistant answers from the built-in knowledge base and the child's records, so the feature still works offline. Such replies are labelled in the chat.
+- Emergency questions (breathing trouble, seizures, swallowed batteries, etc.) always start with an instruction to call emergency services.
+
+The knowledge base lives in `backend/src/data/knowledge/`:
+
+| File | Contents | Source |
+|------|----------|--------|
+| `who-growth-standards.json` | Official LMS tables by day of age (0-1856 days) for weight, length/height, head circumference and BMI, used for exact z-scores and percentiles | WHO Child Growth Standards, from WHO's [`anthro`](https://github.com/WorldHealthOrganization/anthro) repository |
+| `vaccination-schedule.json` | Routine immunization timetable with official notes | IAP-ACVIP 2023, Table I ([Indian Pediatrics, Feb 2024](https://www.indianpediatrics.net/feb2024/113.pdf)) |
+| `milestones.json` | All 159 milestones from the 12 official checklists (2 months to 5 years), plus screening reminders and parent tips | CDC "Learn the Signs. Act Early." (2022 revision, public domain) |
+| `parenting-faq.json` | Parenting and child-health FAQs (fever, feeding, sleep, safety, red flags) | Parento editorial summary of public WHO/AAP/IAP/CDC guidance |
+
+New children get the CDC milestone checklist in **Track**, and the demo seed generates growth records from the WHO tables. The FAQ file is a written summary, not an official document, so have a pediatrician review it before production use.
+
+API endpoints (parent role): `POST /api/ai/chat/:childId`, `GET /api/ai/summary/:childId`, and `GET /api/ai/status`.
 
 ---
 
@@ -323,16 +364,15 @@ Planned platforms:
 - ✅ Notifications
 - ✅ Docker Support
 - ✅ CI/CD Pipeline
+- ✅ AI Chat Assistant (Claude + offline knowledge base)
 
 ---
 
 ## Version 2.0
 
-- ⏳ AI Parenting Assistant
 - ⏳ Personalized Parenting Recommendations
 - ⏳ AI Growth Analysis
 - ⏳ Smart Vaccination Suggestions
-- ⏳ AI Chat Assistant
 
 ---
 

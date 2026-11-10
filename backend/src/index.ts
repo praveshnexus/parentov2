@@ -35,7 +35,15 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(compression());
+// Never compress Server-Sent Events: gzip buffers the output and would hold back
+// the AI assistant's streamed chunks until the response ends.
+app.use(compression({
+  filter: (req, res) => {
+    const type = res.getHeader('Content-Type');
+    if (typeof type === 'string' && type.includes('text/event-stream')) return false;
+    return compression.filter(req, res);
+  },
+}));
 
 // ── Logging ───────────────────────────────────────────────────
 if (config.NODE_ENV !== 'test') {

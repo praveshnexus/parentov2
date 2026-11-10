@@ -1,0 +1,177 @@
+{
+  "source": "Indian Academy of Pediatrics Advisory Committee on Vaccines and Immunization Practices (IAP-ACVIP): Recommended Immunization Schedule 2023, Table I 'Vaccines for Routine Use'. Rao MIS et al., Indian Pediatrics 2024;61:113-124. https://www.indianpediatrics.net/feb2024/113.pdf",
+  "disclaimer": "Ages are in completed weeks/months/years. Brands and combination vaccines change some details (noted below). Always follow the schedule your child's pediatrician gives you.",
+  "schedule": [
+    {
+      "ageLabel": "Birth",
+      "ageWeeks": 0,
+      "vaccines": [
+        "BCG",
+        "OPV-0",
+        "Hepatitis B-1"
+      ],
+      "notes": "BCG before discharge; OPV as soon as possible after birth; Hepatitis B within 24 hours of birth."
+    },
+    {
+      "ageLabel": "6 weeks",
+      "ageWeeks": 6,
+      "vaccines": [
+        "DTwP/DTaP-1",
+        "IPV-1",
+        "Hib-1",
+        "Hepatitis B-2",
+        "Rotavirus-1",
+        "PCV-1"
+      ],
+      "notes": "DTwP or DTaP may be used for primary immunization. IPV schedule is 6-10-14 weeks."
+    },
+    {
+      "ageLabel": "10 weeks",
+      "ageWeeks": 10,
+      "vaccines": [
+        "DTwP/DTaP-2",
+        "IPV-2",
+        "Hib-2",
+        "Hepatitis B-3",
+        "Rotavirus-2",
+        "PCV-2"
+      ],
+      "notes": "RV1 (GSK) rotavirus vaccine is a 2-dose schedule; all other rotavirus brands are 3-dose."
+    },
+    {
+      "ageLabel": "14 weeks",
+      "ageWeeks": 14,
+      "vaccines": [
+        "DTwP/DTaP-3",
+        "IPV-3",
+        "Hib-3",
+        "Hepatitis B-4",
+        "Rotavirus-3",
+        "PCV-3"
+      ],
+      "notes": "A 4th Hepatitis B dose is safe and permitted as part of a combination vaccine. Rotavirus-3 is not needed with RV1 (GSK)."
+    },
+    {
+      "ageLabel": "6 months",
+      "ageWeeks": 26,
+      "vaccines": [
+        "Influenza (IIV)-1"
+      ],
+      "notes": "Uniform dose of 0.5 mL from 6 months."
+    },
+    {
+      "ageLabel": "6-9 months",
+      "ageWeeks": 26,
+      "vaccines": [
+        "Typhoid conjugate vaccine"
+      ],
+      "notes": "No booster dose is recommended."
+    },
+    {
+      "ageLabel": "7 months",
+      "ageWeeks": 30,
+      "vaccines": [
+        "Influenza (IIV)-2"
+      ],
+      "notes": "Second dose 4 weeks after the first. Then repeat every year, in the pre-monsoon period, until 5 years of age."
+    },
+    {
+      "ageLabel": "9 months",
+      "ageWeeks": 39,
+      "vaccines": [
+        "MMR-1"
+      ]
+    },
+    {
+      "ageLabel": "12 months",
+      "ageWeeks": 52,
+      "vaccines": [
+        "Hepatitis A-1"
+      ],
+      "notes": "A single dose is enough for the live attenuated Hepatitis A vaccine; the inactivated vaccine needs two doses."
+    },
+    {
+      "ageLabel": "15 months",
+      "ageWeeks": 65,
+      "vaccines": [
+        "MMR-2",
+        "Varicella-1",
+        "PCV booster"
+      ]
+    },
+    {
+      "ageLabel": "16-18 months",
+      "ageWeeks": 70,
+      "vaccines": [
+        "DTwP/DTaP booster-1",
+        "Hib booster-1",
+        "IPV booster-1"
+      ]
+    },
+    {
+      "ageLabel": "18-19 months",
+      "ageWeeks": 78,
+      "vaccines": [
+        "Hepatitis A-2",
+        "Varicella-2"
+      ],
+      "notes": "Hepatitis A-2 only for the inactivated vaccine. Varicella-2 is given 3-6 months after dose 1."
+    },
+    {
+      "ageLabel": "Every year (6 months to 5 years)",
+      "ageWeeks": null,
+      "vaccines": [
+        "Influenza (annual)"
+      ],
+      "notes": "Annual influenza vaccination for all children until 5 years; beyond 5 years for those at high risk."
+    },
+    {
+      "ageLabel": "4-6 years",
+      "ageWeeks": 208,
+      "vaccines": [
+        "DTwP/DTaP booster-2",
+        "IPV booster-2",
+        "MMR-3"
+      ],
+      "notes": "Tdap should not be used as the second DTP booster at 4-6 years."
+    },
+    {
+      "ageLabel": "9-14 years",
+      "ageWeeks": 468,
+      "vaccines": [
+        "HPV (2 doses, 0 and 6 months)"
+      ],
+      "notes": "Recommended for both girls and boys from the 2023 schedule."
+    },
+    {
+      "ageLabel": "10 years",
+      "ageWeeks": 520,
+      "vaccines": [
+        "Tdap"
+      ],
+      "notes": "Given even if Tdap was given earlier as the second DTP booster. If Tdap is unavailable or unaffordable, Td can be used."
+    },
+    {
+      "ageLabel": "15-18 years",
+      "ageWeeks": 780,
+      "vaccines": [
+        "HPV (3 doses, 0-2-6 months, if not given earlier)"
+      ],
+      "catchUpOnly": true
+    },
+    {
+      "ageLabel": "16-18 years",
+      "ageWeeks": 832,
+      "vaccines": [
+        "Td"
+      ],
+      "notes": "New in the 2023 schedule."
+    }
+  ],
+  "afterCareSource": "Parento editorial guidance. Not part of the IAP table.",
+  "afterCare": [
+    "Mild fever, fussiness, and redness or swelling where the injection was given are common for 1-2 days and usually settle on their own.",
+    "Keep feeding normally and comfort your child. Ask your doctor before giving any fever medicine.",
+    "Get medical help urgently for difficulty breathing, swelling of the face or lips, a seizure, crying that will not stop for 3 hours or more, or unusual drowsiness."
+  ]
+}

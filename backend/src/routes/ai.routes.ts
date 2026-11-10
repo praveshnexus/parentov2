@@ -18,5 +18,6 @@ const aiLimiter = rateLimit({
 // Only PARENT role can use AI (doctors have their own tools)
 router.post('/chat/:childId', authenticate, authorize('PARENT'), aiLimiter, AiController.chat);
 router.get('/summary/:childId', authenticate, authorize('PARENT'), AiController.summary);
+router.get('/status', authenticate, AiController.status);
 
 export default router;

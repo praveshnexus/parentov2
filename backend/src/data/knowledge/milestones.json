@@ -1,0 +1,360 @@
+{
+  "source": "CDC “Learn the Signs. Act Early.” developmental milestone checklists (revised 2022, with AAP). Milestone text is taken verbatim from the official checklists; parent tips are selected from the same checklists. U.S. Government work, public domain. https://www.cdc.gov/act-early/milestones/",
+  "note": "Each checklist lists milestones MOST children (at least 75%) are expected to meet by that age. The checklists are communication tools, not a substitute for standardized developmental screening.",
+  "ifConcerned": "If a child is not meeting one or more milestones, has lost skills he or she once had, or you have other concerns, act early: talk with the child's doctor, share your concerns, and ask about developmental screening.",
+  "ages": [
+    {
+      "ageMonth": 2,
+      "social": [
+        "Calms down when spoken to or picked up",
+        "Looks at your face",
+        "Seems happy to see you when you walk up to her",
+        "Smiles when you talk to or smile at her"
+      ],
+      "language": [
+        "Makes sounds other than crying",
+        "Reacts to loud sounds"
+      ],
+      "cognitive": [
+        "Watches you as you move",
+        "Looks at a toy for several seconds"
+      ],
+      "physical": [
+        "Holds head up when on tummy",
+        "Moves both arms and both legs",
+        "Opens hands briefly"
+      ],
+      "tips": [
+        "Feed only breast milk or formula to your baby. Babies are not ready for other foods, water or other drinks for about the first 6 months of life.",
+        "Talk, read, and sing to your baby to help her develop and understand language."
+      ]
+    },
+    {
+      "ageMonth": 4,
+      "social": [
+        "Smiles on his own to get your attention",
+        "Chuckles (not yet a full laugh) when you try to make her laugh",
+        "Looks at you, moves, or makes sounds to get or keep your attention"
+      ],
+      "language": [
+        "Makes sounds like “oooo”, “aahh” (cooing)",
+        "Makes sounds back when you talk to him",
+        "Turns head towards the sound of your voice"
+      ],
+      "cognitive": [
+        "If hungry, opens mouth when she sees breast or bottle",
+        "Looks at his hands with interest"
+      ],
+      "physical": [
+        "Holds head steady without support when you are holding her",
+        "Holds a toy when you put it in his hand",
+        "Uses her arm to swing at toys",
+        "Brings hands to mouth",
+        "Pushes up onto elbows/forearms when on tummy"
+      ],
+      "tips": [
+        "Let your baby have time to move and interact with people and objects throughout the day. Try not to keep your baby in swings, strollers, or bouncy seats for too long.",
+        "Lay your baby on her back and show her a bright-colored toy. Move the toy slowly from left to right and up and down to see if she watches how the toy moves."
+      ]
+    },
+    {
+      "ageMonth": 6,
+      "social": [
+        "Knows familiar people",
+        "Likes to look at himself in a mirror",
+        "Laughs"
+      ],
+      "language": [
+        "Takes turns making sounds with you",
+        "Blows “raspberries” (sticks tongue out and blows)",
+        "Makes squealing noises"
+      ],
+      "cognitive": [
+        "Puts things in her mouth to explore them",
+        "Reaches to grab a toy he wants",
+        "Closes lips to show she doesn’t want more food"
+      ],
+      "physical": [
+        "Rolls from tummy to back",
+        "Pushes up with straight arms when on tummy",
+        "Leans on hands to support himself when sitting"
+      ],
+      "tips": [
+        "Talk with your baby’s doctor about when to start solid foods and what foods are choking risks. Breast milk or formula is still the most important source of “food” for your baby.",
+        "Point out new things to your baby and name them. For example, when on a walk, point out cars, trees, and animals.",
+        "Put your baby on her tummy or back and put toys just out of reach. Encourage her to roll over to reach the toys."
+      ]
+    },
+    {
+      "ageMonth": 9,
+      "social": [
+        "Is shy, clingy, or fearful around strangers",
+        "Shows several facial expressions, like happy, sad, angry, and surprised",
+        "Looks when you call her name",
+        "Reacts when you leave (looks, reaches for you, or cries)",
+        "Smiles or laughs when you play peek-a-boo"
+      ],
+      "language": [
+        "Makes different sounds like “mamamama” and “babababa”",
+        "Lifts arms up to be picked up"
+      ],
+      "cognitive": [
+        "Looks for objects when dropped out of sight (like his spoon or toy)",
+        "Bangs two things together"
+      ],
+      "physical": [
+        "Gets to a sitting position by herself",
+        "Moves things from one hand to her other hand",
+        "Uses fingers to “rake” food towards himself",
+        "Sits without support"
+      ],
+      "screening": "At 9 months, your baby is due for general developmental screening, as recommended for all children by the American Academy of Pediatrics.",
+      "tips": [
+        "Find out about choking risks and safe foods to feed your baby. Let him practice feeding himself with his fingers and using a cup with a small amount of water.",
+        "Help your baby get used to foods with different tastes and textures. Foods can be smooth, mashed, or finely chopped.",
+        "Play with your baby by dumping blocks from a container and putting them back in together."
+      ]
+    },
+    {
+      "ageMonth": 12,
+      "social": [
+        "Plays games with you, like pat-a-cake"
+      ],
+      "language": [
+        "Waves “bye-bye”",
+        "Calls a parent “mama” or “dada” or another special name",
+        "Understands “no” (pauses briefly or stops when you say it)"
+      ],
+      "cognitive": [
+        "Puts something in a container, like a block in a cup",
+        "Looks for things he sees you hide, like a toy under a blanket"
+      ],
+      "physical": [
+        "Pulls up to stand",
+        "Walks, holding on to furniture",
+        "Drinks from a cup without a lid, as you hold it",
+        "Picks things up between thumb and pointer finger, like small bits of food"
+      ],
+      "tips": [
+        "Give your baby water, breast milk, or plain milk. Do not give your baby sugary beverages, such as fruit drinks, soda, sports drinks, or flavored milks.",
+        "Give your baby safe places to explore. Baby-proof your home. Lock away medicines, chemicals, and cleaning products.",
+        "Build on what your baby tries to say. If he says “ta,” say “Yes, a truck.”"
+      ]
+    },
+    {
+      "ageMonth": 15,
+      "social": [
+        "Copies other children while playing, like taking toys out of a container when another child does",
+        "Shows you an object she likes",
+        "Claps when excited",
+        "Hugs stuffed doll or other toy",
+        "Shows you affection (hugs, cuddles, or kisses you)"
+      ],
+      "language": [
+        "Tries to say one or two words besides “mama” or “dada,” like “ba” for ball or “da” for dog",
+        "Looks at a familiar object when you name it",
+        "Follows directions given with both a gesture and words",
+        "Points to ask for something or to get help"
+      ],
+      "cognitive": [
+        "Tries to use things the right way, like a phone, cup, or book",
+        "Stacks at least two small objects, like blocks"
+      ],
+      "physical": [
+        "Takes a few steps on his own",
+        "Uses fingers to feed herself some food"
+      ],
+      "tips": [
+        "Children between 1 and 2 years of age need 11 to 14 hours of sleep a day (including naps). Consistent sleep times make it easier!",
+        "Limit screen time (TV, tablets, phones, etc.) to video calling with loved ones. Screen time is not recommended for children younger than 2 years of age.",
+        "Sing songs with gestures, such as “Wheels on the Bus.” See if your child tries to do some of the actions."
+      ]
+    },
+    {
+      "ageMonth": 18,
+      "social": [
+        "Moves away from you, but looks to make sure you are close by",
+        "Points to show you something interesting",
+        "Puts hands out for you to wash them",
+        "Looks at a few pages in a book with you",
+        "Helps you dress him by pushing arm through sleeve or lifting up foot"
+      ],
+      "language": [
+        "Tries to say three or more words besides “mama” or “dada”",
+        "Follows one-step directions without any gestures, like giving you the toy when you say, “Give it to me.”"
+      ],
+      "cognitive": [
+        "Copies you doing chores, like sweeping with a broom",
+        "Plays with toys in a simple way, like pushing a toy car"
+      ],
+      "physical": [
+        "Walks without holding on to anyone or anything",
+        "Scribbles",
+        "Drinks from a cup without a lid and may spill sometimes",
+        "Feeds herself with her fingers",
+        "Tries to use a spoon",
+        "Climbs on and off a couch or chair without help"
+      ],
+      "screening": "At 18 months, your child is due for general developmental screening and an autism screening, as recommended for all children by the American Academy of Pediatrics.",
+      "tips": [
+        "Give simple choices. Let your child choose between two things.",
+        "Start to teach your child the names for body parts by pointing them out.",
+        "Have steady routines for sleeping and eating."
+      ]
+    },
+    {
+      "ageMonth": 24,
+      "social": [
+        "Notices when others are hurt or upset, like pausing or looking sad when someone is crying",
+        "Looks at your face to see how to react in a new situation"
+      ],
+      "language": [
+        "Points to things in a book when you ask, like “Where is the bear?”",
+        "Says at least two words together, like “More milk.”",
+        "Points to at least two body parts when you ask him to show you",
+        "Uses more gestures than just waving and pointing, like blowing a kiss or nodding yes"
+      ],
+      "cognitive": [
+        "Holds something in one hand while using the other hand; for example, holding a container and taking the lid off",
+        "Tries to use switches, knobs, or buttons on a toy",
+        "Plays with more than one toy at the same time, like putting toy food on a toy plate"
+      ],
+      "physical": [
+        "Kicks a ball",
+        "Runs",
+        "Walks (not climbs) up a few stairs with or without help",
+        "Eats with a spoon"
+      ],
+      "screening": "At 2 years, your child is due for an autism screening, as recommended for all children by the American Academy of Pediatrics.",
+      "tips": [
+        "Allow your child to eat as much or as little as she wants at each meal. Toddlers don’t always eat the same amount or type of food each day.",
+        "Children this age need 11 to 14 hours of sleep a day (including naps).",
+        "Most children are not able to toilet train until 2 to 3 years old. Starting too early can cause stress and setbacks."
+      ]
+    },
+    {
+      "ageMonth": 30,
+      "social": [
+        "Plays next to other children and sometimes plays with them",
+        "Shows you what she can do by saying, “Look at me!”",
+        "Follows simple routines when told, like helping to pick up toys when you say, “It’s clean-up time.”"
+      ],
+      "language": [
+        "Says about 50 words",
+        "Says two or more words, with one action word, like “Doggie run”",
+        "Names things in a book when you point and ask, “What is this?”",
+        "Says words like “I,” “me,” or “we”"
+      ],
+      "cognitive": [
+        "Uses things to pretend, like feeding a block to a doll as if it were food",
+        "Shows simple problem-solving skills, like standing on a small stool to reach something",
+        "Follows two-step instructions like “Put the toy down and close the door.”",
+        "Shows he knows at least one color, like pointing to a red crayon when you ask, “Which one is red?”"
+      ],
+      "physical": [
+        "Uses hands to twist things, like turning doorknobs or unscrewing lids",
+        "Takes some clothes off by himself, like loose pants or an open jacket",
+        "Jumps off the ground with both feet",
+        "Turns book pages, one at a time, when you read to her"
+      ],
+      "screening": "At 30 months, your child is due for general developmental screening as recommended for all children by the American Academy of Pediatrics.",
+      "tips": [
+        "Play with your child outside. For example, take your child to the park to climb on equipment and run in safe areas.",
+        "Encourage “free play,” where your child can follow her interests, try new things, and use things in new ways.",
+        "Help your child learn how to play with other children. Show him how by helping him share, take turns, and use his “words.”"
+      ]
+    },
+    {
+      "ageMonth": 36,
+      "social": [
+        "Calms down within 10 minutes after you leave her, like at a childcare drop off",
+        "Notices other children and joins them to play"
+      ],
+      "language": [
+        "Talks with you in conversation using at least two back-and-forth exchanges",
+        "Asks “who,” “what,” “where,” or “why” questions",
+        "Says what action is happening in a picture or book when asked, like “running,” “eating,” or “playing”",
+        "Says first name, when asked",
+        "Talks well enough for others to understand, most of the time"
+      ],
+      "cognitive": [
+        "Draws a circle, when you show him how",
+        "Avoids touching hot objects, like a stove, when you warn her"
+      ],
+      "physical": [
+        "Strings items together, like large beads or macaroni",
+        "Puts on some clothes by himself, like loose pants or a jacket",
+        "Uses a fork"
+      ],
+      "tips": [
+        "Let your child help with making meals. Give him simple tasks, such as washing fruits and vegetables or stirring.",
+        "Give your child instructions with 2 or 3 steps.",
+        "Talk about your child’s emotions and give him words to help him explain how he’s feeling."
+      ]
+    },
+    {
+      "ageMonth": 48,
+      "social": [
+        "Pretends to be something else during play (teacher, superhero, dog)",
+        "Asks to go play with children if none are around",
+        "Comforts others who are hurt or sad, like hugging a crying friend",
+        "Avoids danger, like not jumping from tall heights at the playground",
+        "Likes to be a “helper”",
+        "Changes behavior based on where she is (place of worship, library, playground)"
+      ],
+      "language": [
+        "Says sentences with four or more words",
+        "Says some words from a song, story, or nursery rhyme",
+        "Talks about at least one thing that happened during his day",
+        "Answers simple questions like “What is a coat for?” or “What is a crayon for?”"
+      ],
+      "cognitive": [
+        "Names a few colors of items",
+        "Tells what comes next in a well-known story",
+        "Draws a person with three or more body parts"
+      ],
+      "physical": [
+        "Catches a large ball most of the time",
+        "Serves himself food or pours water, with adult supervision",
+        "Unbuttons some buttons",
+        "Holds crayon or pencil between fingers and thumb (not a fist)"
+      ],
+      "tips": [
+        "Eat meals with your child when possible. Take time to answer your child’s “why” questions.",
+        "Help your child learn about others’ feelings, and about positive ways to react.",
+        "Use positive words and give attention to behaviors you want to see."
+      ]
+    },
+    {
+      "ageMonth": 60,
+      "social": [
+        "Follows rules or takes turns when playing games with other children",
+        "Sings, dances, or acts for you",
+        "Does simple chores at home, like matching socks or clearing the table after eating"
+      ],
+      "language": [
+        "Tells a story she heard or made up with at least two events",
+        "Answers simple questions about a book or story after you read or tell it to him",
+        "Keeps a conversation going with more than three back-and-forth exchanges",
+        "Uses or recognizes simple rhymes (bat-cat, ball-tall)"
+      ],
+      "cognitive": [
+        "Counts to 10",
+        "Names some numbers between 1 and 5 when you point to them",
+        "Uses words about time, like “yesterday,” “tomorrow,” “morning,” or “night”",
+        "Pays attention for 5 to 10 minutes during activities (screen time does not count)",
+        "Writes some letters in her name",
+        "Names some letters when you point to them"
+      ],
+      "physical": [
+        "Buttons some buttons",
+        "Hops on one foot"
+      ],
+      "tips": [
+        "Eat meals with your child and enjoy family time talking together. Avoid screen time during mealtime.",
+        "Encourage your child to “read” by looking at the pictures and telling the story.",
+        "Use words to help your child begin to understand time, such as today, tomorrow, and yesterday."
+      ]
+    }
+  ]
+}

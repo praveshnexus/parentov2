@@ -7,5 +7,5 @@ module.exports = {
   testRegex: '.*\\.test\\.ts$',
   collectCoverageFrom: ['src/**/*.ts', '!src/__tests__/**', '!src/index.ts'],
   coverageThreshold: { global: { branches: 60, functions: 60, lines: 60, statements: 60 } },
-  setupFilesAfterFramework: [],
+  setupFilesAfterEnv: [],
 };
