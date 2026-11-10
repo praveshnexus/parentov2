@@ -84,7 +84,7 @@ describe('Auth API', () => {
       expect(res.status).toBe(401);
     });
 
-    it('handles unverified email login', async () => {
+    it('rejects login when email is not verified', async () => {
       const res = await request(app)
         .post('/api/auth/login')
         .send({
@@ -92,7 +92,7 @@ describe('Auth API', () => {
           password: 'Password1',
         });
 
-      expect([200, 401]).toContain(res.status);
+      expect(res.status).toBe(403);
     });
   });
 
