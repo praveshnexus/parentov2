@@ -1,3 +1,4 @@
+
 import winston from 'winston';
 import { isDev } from '../config/env';
 
@@ -11,13 +12,21 @@ export const logger = winston.createLogger({
     json()
   ),
   transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' }),
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: 'logs/error.log',
+      level: 'error',
+    }),
+    new winston.transports.File({
+      filename: 'logs/combined.log',
+    }),
   ],
 });
 
 if (isDev) {
-  logger.add(new winston.transports.Console({
-    format: combine(colorize(), simple()),
-  }));
+  logger.transports
+    .filter((transport) => transport instanceof winston.transports.Console)
+    .forEach((transport) => {
+      transport.format = combine(colorize(), simple());
+    });
 }

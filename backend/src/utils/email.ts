@@ -1,16 +1,7 @@
+
 import nodemailer from 'nodemailer';
 import { config } from '../config/env';
 import { logger } from './logger';
-
-const transporter = nodemailer.createTransport({
-  host: config.SMTP_HOST,
-  port: config.SMTP_PORT,
-  secure: config.SMTP_PORT === 465,
-  auth: {
-    user: config.SMTP_USER,
-    pass: config.SMTP_PASS,
-  },
-});
 
 interface SendEmailOptions {
   to: string;
@@ -18,7 +9,36 @@ interface SendEmailOptions {
   html: string;
 }
 
-export const sendEmail = async ({ to, subject, html }: SendEmailOptions): Promise<void> => {
+const isEmailConfigured = Boolean(
+  config.SMTP_HOST &&
+  config.SMTP_PORT &&
+  config.SMTP_USER &&
+  config.SMTP_PASS &&
+  config.EMAIL_FROM
+);
+
+const transporter = isEmailConfigured
+  ? nodemailer.createTransport({
+      host: config.SMTP_HOST,
+      port: config.SMTP_PORT!,
+      secure: config.SMTP_PORT === 465,
+      auth: {
+        user: config.SMTP_USER,
+        pass: config.SMTP_PASS,
+      },
+    })
+  : null;
+
+export const sendEmail = async ({
+  to,
+  subject,
+  html,
+}: SendEmailOptions): Promise<void> => {
+  if (!transporter || !config.EMAIL_FROM) {
+    logger.warn(`Email skipped because SMTP is not configured: ${subject}`);
+    return;
+  }
+
   try {
     await transporter.sendMail({
       from: config.EMAIL_FROM,
@@ -26,17 +46,19 @@ export const sendEmail = async ({ to, subject, html }: SendEmailOptions): Promis
       subject,
       html,
     });
+
     logger.info(`Email sent to ${to}: ${subject}`);
   } catch (error) {
-  logger.error('Email send error:', error);
+    logger.error('Email send error:', error);
 
-  if (config.NODE_ENV === 'development') {
-    logger.warn('Skipping email in development mode.');
-    return;
+    // Email failures should not crash the application.
+    if (config.NODE_ENV === 'development' || config.NODE_ENV === 'production') {
+      logger.warn('Email notification could not be delivered.');
+      return;
+    }
+
+    throw error;
   }
-
-  throw error;
-}
 };
 
 export const emailTemplates = {
