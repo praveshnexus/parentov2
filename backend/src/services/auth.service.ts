@@ -52,7 +52,7 @@ export const AuthService = {
       role: dto.role as Role,
     });
 
-    console.log("Saved Hash:", user.password);
+ 
 
     // Send verification email
     const token = generateToken();
