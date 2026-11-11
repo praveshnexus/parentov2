@@ -149,8 +149,8 @@ export function Badge({ children, variant = 'gray', className }: BadgeProps) {
 }
 
 // ── Avatar ────────────────────────────────────────────────────
-interface AvatarProps { src?: string | null; name: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; className?: string; }
-export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
+interface AvatarProps { src?: string | null; name?: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; className?: string; }
+export function Avatar({ src, name = '', size = 'md', className }: AvatarProps) {
   const sizes = {
     xs: 'w-7 h-7 text-xs',
     sm: 'w-9 h-9 text-xs',
@@ -158,9 +158,16 @@ export function Avatar({ src, name, size = 'md', className }: AvatarProps) {
     lg: 'w-14 h-14 text-base',
     xl: 'w-[72px] h-[72px] text-xl',
   };
-  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const initials = (name || '')
+    .trim()
+    .split(/\s+/)
+    .map(n => n[0])
+    .filter(Boolean)
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() || '?';
   if (src) {
-    return <img src={src} alt={name} className={clsx('rounded-full object-cover flex-shrink-0', sizes[size], className)} />;
+    return <img src={src} alt={name || 'Avatar'} className={clsx('rounded-full object-cover flex-shrink-0', sizes[size], className)} />;
   }
   return (
     <div className={clsx('rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-semibold flex-shrink-0', sizes[size], className)}>
@@ -284,3 +291,5 @@ export function PageHeader({ title, subtitle, back, actions }: {
     </div>
   );
 }
+
+export { ErrorBoundary } from './ErrorBoundary';

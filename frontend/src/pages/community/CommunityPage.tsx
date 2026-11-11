@@ -177,20 +177,20 @@ function CommentItem({ c }: { c: Comment }) {
   return (
     <div className="flex gap-2.5">
       <Avatar
-        src={c.author.avatarUrl}
-        name={c.author.fullName}
+        src={c.author?.avatarUrl}
+        name={c.author?.fullName ?? "User"}
         size="xs"
         className="mt-0.5 flex-shrink-0"
       />
       <div className="flex-1 bg-gray-50 rounded-2xl rounded-tl-sm px-3 py-2">
         <p className="text-xs font-semibold text-ink-primary">
-          {c.author.fullName}
+          {c.author?.fullName ?? "Anonymous"}
         </p>
         <p className="text-xs text-ink-secondary mt-0.5 leading-relaxed">
           {c.content}
         </p>
         <p className="text-[10px] text-ink-muted mt-1">
-          {formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })}
+          {c.createdAt ? formatDistanceToNow(new Date(c.createdAt), { addSuffix: true }) : ""}
         </p>
       </div>
     </div>
@@ -204,9 +204,11 @@ function CommentsPanel({ postId }: { postId: string }) {
     queryFn: ({ pageParam = 1 }) => postsApi.getComments(postId, pageParam),
     initialPageParam: 1,
     getNextPageParam: (last: any) =>
-      last.data.meta?.hasNext ? last.data.meta.page + 1 : undefined,
+      last?.data?.meta?.hasNext ? (last?.data?.meta?.page ?? 1) + 1 : undefined,
   });
-  const comments = data?.pages.flatMap((p: any) => p.data.data) ?? [];
+  const comments = Array.isArray(data?.pages)
+    ? data.pages.flatMap((p: any) => p?.data?.data ?? [])
+    : [];
   if (!comments.length)
     return (
       <p className="text-xs text-ink-muted text-center py-3">No comments yet</p>
@@ -231,36 +233,49 @@ function PostCard({ post }: { post: Post }) {
     mutationFn: () => postsApi.toggleLike(post.id),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ["feed"] });
-      queryClient.setQueryData(["feed"], (old: any) => ({
-        ...old,
-        pages: old?.pages?.map((page: any) => ({
-          ...page,
-          data: {
-            ...page.data,
-            data: page.data.data.map((p: Post) =>
-              p.id === post.id
-                ? {
-                    ...p,
-                    isLiked: !p.isLiked,
-                    likesCount: p.isLiked ? p.likesCount - 1 : p.likesCount + 1,
-                  }
-                : p,
-            ),
-          },
-        })),
-      }));
+      queryClient.setQueryData(["feed"], (old: any) => {
+        if (!old || !Array.isArray(old.pages)) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            data: {
+              ...page?.data,
+              data: Array.isArray(page?.data?.data)
+                ? page.data.data.map((p: Post) =>
+                    p.id === post.id
+                      ? {
+                          ...p,
+                          isLiked: !p.isLiked,
+                          likesCount: p.isLiked ? Math.max(0, p.likesCount - 1) : p.likesCount + 1,
+                        }
+                      : p,
+                  )
+                : [],
+            },
+          })),
+        };
+      });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-highlights"] });
     },
   });
 
   const bookmarkMutation = useMutation({
     mutationFn: () => postsApi.toggleBookmark(post.id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["feed"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-highlights"] });
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: () => postsApi.delete(post.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-highlights"] });
       toast.success("Post deleted");
     },
   });
@@ -278,16 +293,16 @@ function PostCard({ post }: { post: Post }) {
       {/* Author row - now with bookmark/trash */}
       <div className="flex items-center gap-3 px-4 pt-4 pb-2">
         <Avatar
-          src={post.author.avatarUrl}
-          name={post.author.fullName}
+          src={post.author?.avatarUrl}
+          name={post.author?.fullName ?? "User"}
           size="md"
         />
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm text-ink-primary">
-            {post.author.fullName}
+            {post.author?.fullName ?? "Anonymous"}
           </p>
           <p className="text-xs text-ink-muted">
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+            {post.createdAt ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }) : ""}
           </p>
         </div>
         {user?.id === post.authorId ? (
@@ -320,7 +335,7 @@ function PostCard({ post }: { post: Post }) {
         <p className="text-sm text-ink-primary leading-relaxed whitespace-pre-wrap">
           {post.content}
         </p>
-        {post.hashtags.length > 0 && (
+        {Array.isArray(post.hashtags) && post.hashtags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
             {post.hashtags.map((tag) => (
               <span key={tag} className="text-xs text-primary-500 font-medium">
@@ -332,7 +347,7 @@ function PostCard({ post }: { post: Post }) {
       </div>
 
       {/* Images */}
-      {post.mediaUrls.length > 0 && (
+      {Array.isArray(post.mediaUrls) && post.mediaUrls.length > 0 && (
         <div
           className={clsx(
             "grid gap-1 px-4 pb-3",
@@ -482,6 +497,7 @@ function CreatePostModal({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-highlights"] });
       setContent("");
       setFiles([]);
       setPreviews([]);
@@ -567,6 +583,7 @@ export default function CommunityPage() {
     if (!socket) return;
     const handler = () => {
       queryClient.invalidateQueries({ queryKey: ["feed"] });
+      queryClient.invalidateQueries({ queryKey: ["feed-highlights"] });
     };
     socket.on("post:new", handler);
     socket.on("post:liked", handler);
@@ -582,10 +599,12 @@ export default function CommunityPage() {
       queryFn: ({ pageParam = 1 }) => postsApi.getFeed(pageParam),
       initialPageParam: 1,
       getNextPageParam: (last: any) =>
-        last.data.meta?.hasNext ? last.data.meta.page + 1 : undefined,
+        last?.data?.meta?.hasNext ? (last?.data?.meta?.page ?? 1) + 1 : undefined,
     });
 
-  const posts = data?.pages.flatMap((p: any) => p.data.data) ?? [];
+  const posts = Array.isArray(data?.pages)
+    ? data.pages.flatMap((p: any) => p?.data?.data ?? [])
+    : [];
 
   return (
     <div className="max-w-app mx-auto">

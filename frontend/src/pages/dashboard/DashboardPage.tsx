@@ -128,7 +128,7 @@ function ExpertConnect({ doctors }: { doctors: Doctor[] }) {
 // ── Community highlights (real feed data) ───────────────────────
 function CommunityHighlights() {
   const { data } = useQuery({
-    queryKey: ['feed'],
+    queryKey: ['feed-highlights'],
     queryFn: () => postsApi.getFeed(1),
     staleTime: 60_000,
   });
@@ -147,8 +147,8 @@ function CommunityHighlights() {
             <div className="flex gap-3">
               <Avatar src={post.author?.avatarUrl} name={post.author?.fullName ?? '?'} size="sm" className="flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-ink-primary">{post.author?.fullName}</p>
-                <p className="text-xs text-ink-muted">{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
+                <p className="text-sm font-semibold text-ink-primary">{post.author?.fullName ?? 'Anonymous'}</p>
+                <p className="text-xs text-ink-muted">{post.createdAt ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }) : ''}</p>
                 <p className="text-sm text-ink-secondary mt-1.5 line-clamp-2 leading-relaxed">{post.content}</p>
               </div>
             </div>

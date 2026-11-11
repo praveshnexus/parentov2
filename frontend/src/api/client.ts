@@ -2,12 +2,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import toast from 'react-hot-toast';
 
-// Production API URL comes from Vercel environment variables.
-const API_URL = import.meta.env.VITE_API_URL;
-
-if (!API_URL) {
-  throw new Error('VITE_API_URL environment variable is not configured');
-}
+// Production API URL comes from Vercel environment variables, with localhost fallback for dev.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const API_BASE_URL = `${API_URL.replace(/\/+$/, '')}/api`;
 

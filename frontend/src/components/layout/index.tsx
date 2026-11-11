@@ -7,7 +7,7 @@ import {
   ChevronDown, Menu, X,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { Avatar } from '@/components/ui';
+import { Avatar, ErrorBoundary } from '@/components/ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { notificationsApi } from '@/api/services';
 import clsx from 'clsx';
@@ -393,7 +393,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-surface-bg">
       <TopNav />
       <main className="pt-14 md:pt-16 pb-20 lg:pb-8">
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </main>
       <BottomNav />
     </div>
