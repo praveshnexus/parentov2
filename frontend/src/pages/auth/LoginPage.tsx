@@ -10,7 +10,7 @@ import { AuthLayout } from '@/components/layout';
 import { Button, Input } from '@/components/ui';
 
 const schema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().min(1, 'Email or username is required'),
   password: z.string().min(1, 'Password is required'),
 });
 type FormData = z.infer<typeof schema>;
@@ -20,9 +20,10 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPw, setShowPw] = useState(false);
+  const [demoLoading, setDemoLoading] = useState<string | null>(null);
   const from = (location.state as any)?.from?.pathname ?? '/dashboard';
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -32,6 +33,21 @@ export default function LoginPage() {
       navigate(from, { replace: true });
     } catch (err: any) {
       toast.error(err.response?.data?.message ?? 'Invalid email or password');
+    }
+  };
+
+  const handleQuickDemoLogin = async (email: string, pw: string, label: string) => {
+    setValue('email', email);
+    setValue('password', pw);
+    setDemoLoading(label);
+    try {
+      await login(email, pw);
+      toast.success(`Signed in as ${label}`);
+      navigate(from, { replace: true });
+    } catch (err: any) {
+      toast.error(err.response?.data?.message ?? 'Demo login failed');
+    } finally {
+      setDemoLoading(null);
     }
   };
 
@@ -45,9 +61,9 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
-            label="Email address"
-            type="email"
-            placeholder="you@example.com"
+            label="Email or username"
+            type="text"
+            placeholder="you@example.com or parent"
             leftIcon={<Mail size={16} />}
             error={errors.email?.message}
             {...register('email')}
@@ -72,17 +88,53 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <Button type="submit" fullWidth loading={isSubmitting} size="lg">
+          <Button type="submit" fullWidth loading={isSubmitting || !!demoLoading} size="lg">
             Sign in
           </Button>
         </form>
 
-        {/* Demo credentials hint */}
-        <div className="bg-primary-50 rounded-2xl p-4 text-xs text-ink-secondary space-y-1">
-          <p className="font-semibold text-primary-600 mb-1.5">Demo accounts:</p>
-          <p>👤 parent@parento.com / Parent@123</p>
-          <p>🩺 doctor@parento.com / Doctor@123</p>
-          <p>🛡️ admin@parento.com / Admin@123</p>
+        {/* Quick 1-Click Demo / Dummy Login */}
+        <div className="bg-primary-50/70 border border-primary-100 rounded-2xl p-4 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <p className="font-semibold text-xs text-primary-700">Quick 1-Click Demo Login:</p>
+            <span className="text-[10px] bg-primary-100 text-primary-700 font-semibold px-2 py-0.5 rounded-full">
+              Instant
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              disabled={!!demoLoading || isSubmitting}
+              onClick={() => handleQuickDemoLogin('parent@parento.com', 'Parent@123', 'Parent')}
+              className="px-2 py-2.5 bg-white rounded-xl text-xs font-semibold text-ink-primary shadow-sm border border-gray-100 hover:border-primary-400 hover:bg-primary-50/50 transition-all text-center flex flex-col items-center gap-1 active:scale-95 disabled:opacity-50"
+            >
+              <span className="text-base">👤</span>
+              <span className="font-semibold text-[11px] text-ink-primary">Parent</span>
+            </button>
+            <button
+              type="button"
+              disabled={!!demoLoading || isSubmitting}
+              onClick={() => handleQuickDemoLogin('doctor@parento.com', 'Doctor@123', 'Doctor')}
+              className="px-2 py-2.5 bg-white rounded-xl text-xs font-semibold text-ink-primary shadow-sm border border-gray-100 hover:border-primary-400 hover:bg-primary-50/50 transition-all text-center flex flex-col items-center gap-1 active:scale-95 disabled:opacity-50"
+            >
+              <span className="text-base">🩺</span>
+              <span className="font-semibold text-[11px] text-ink-primary">Doctor</span>
+            </button>
+            <button
+              type="button"
+              disabled={!!demoLoading || isSubmitting}
+              onClick={() => handleQuickDemoLogin('admin@parento.com', 'Admin@123', 'Admin')}
+              className="px-2 py-2.5 bg-white rounded-xl text-xs font-semibold text-ink-primary shadow-sm border border-gray-100 hover:border-primary-400 hover:bg-primary-50/50 transition-all text-center flex flex-col items-center gap-1 active:scale-95 disabled:opacity-50"
+            >
+              <span className="text-base">🛡️</span>
+              <span className="font-semibold text-[11px] text-ink-primary">Admin</span>
+            </button>
+          </div>
+
+          <p className="text-[11px] text-ink-muted text-center leading-relaxed pt-0.5">
+            You can also log in with any dummy email (e.g. <span className="font-mono text-primary-600">test@dummy.com</span>).
+          </p>
         </div>
 
         <p className="text-center text-sm text-ink-secondary">

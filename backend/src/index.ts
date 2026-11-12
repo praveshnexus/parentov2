@@ -9,6 +9,7 @@ import { redis } from './config/redis';
 import { prisma } from './config/prisma';
 import { initSocket } from './config/socket';
 import { logger } from './utils/logger';
+import { ensureDemoAccounts } from './services/demo-seed.service';
 
 const httpServer = http.createServer(app);
 
@@ -20,6 +21,9 @@ const start = async (): Promise<void> => {
   try {
     await prisma.$connect();
     logger.info('✅ PostgreSQL connected');
+
+    // Automatically ensure demo accounts exist on deployment
+    await ensureDemoAccounts();
 
     await redis.connect();
 

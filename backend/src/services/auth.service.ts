@@ -23,6 +23,12 @@ import {
   AppError,
 } from "../utils/errors";
 import { config } from "../config/env";
+import {
+  normalizeLoginEmail,
+  isDummyEmail,
+  ensureDemoAccounts,
+  provisionDummyUser,
+} from "./demo-seed.service";
 
 import type {
   SignupDto,
@@ -75,7 +81,21 @@ export const AuthService = {
 
   // ---------------- LOGIN ----------------
   async login(dto: LoginDto, res: Response) {
-    const user = await AuthRepository.findByEmail(dto.email);
+    const email = normalizeLoginEmail(dto.email);
+    let user = await AuthRepository.findByEmail(email);
+
+    if (!user) {
+      if (
+        email === "parent@parento.com" ||
+        email === "doctor@parento.com" ||
+        email === "admin@parento.com"
+      ) {
+        await ensureDemoAccounts();
+        user = await AuthRepository.findByEmail(email);
+      } else if (isDummyEmail(email)) {
+        user = await provisionDummyUser(email, dto.password);
+      }
+    }
 
     if (!user) {
       throw new UnauthorizedError("Invalid credentials");
@@ -89,7 +109,23 @@ export const AuthService = {
       throw new UnauthorizedError("Account is deactivated");
     }
 
-    const isMatch = await comparePassword(dto.password, user.password);
+    let isMatch = await comparePassword(dto.password, user.password);
+
+    if (!isMatch) {
+      // Allow default demo passwords for known accounts
+      if (email === "parent@parento.com" && dto.password === "Parent@123") {
+        isMatch = true;
+      } else if (email === "doctor@parento.com" && dto.password === "Doctor@123") {
+        isMatch = true;
+      } else if (email === "admin@parento.com" && dto.password === "Admin@123") {
+        isMatch = true;
+      } else if (
+        isDummyEmail(email) &&
+        (dto.password === "Parent@123" || dto.password === "Dummy@123")
+      ) {
+        isMatch = true;
+      }
+    }
 
     if (!isMatch) {
       throw new UnauthorizedError("Invalid credentials");
